@@ -1,0 +1,11 @@
+name: "Emma Skarstein"
+navbar:
+  title: "Emma Skarstein"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Journal"
+      href: Journal.html
+    - text: "Measurement error simulations"
+      href: Measurement_error_simulations.html
+output_dir: "docs"
