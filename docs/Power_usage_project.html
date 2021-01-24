@@ -420,6 +420,8 @@ head(data)</code></pre>
 ## ...4 2019-01-14 03:00:00   1.475 2019-01-14     1  Monday 2019
 ## ...5 2019-01-14 04:00:00   2.791 2019-01-14     1  Monday 2019
 ## ...6 2019-01-14 05:00:00   3.286 2019-01-14     1  Monday 2019</code></pre>
+<div id="basic-plot" class="section level1">
+<h1>Basic plot</h1>
 <p>Let’s try a simple plot of all the observations.</p>
 <pre class="r"><code>p_simple &lt;- ggplot(data, aes(x = tid, y = forbruk)) + 
   geom_line() +
@@ -433,6 +435,9 @@ p_simple</code></pre>
 <p>This certainly looks smooth, but it’s still looking quite messy. I’ll try to add a better theme than the default.</p>
 <p>—-add theme—-</p>
 <p>—–also comment on missing values——</p>
+</div>
+<div id="average-per-weekday" class="section level1">
+<h1>Average per weekday</h1>
 <p>Another option is to try to group the data by some time period by summing or averaging it.</p>
 <p>Let’s first see if there seems to be any difference in consumption for each weekday.</p>
 <pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk)) +
@@ -454,6 +459,9 @@ p_simple</code></pre>
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/Average%20per%20weekday%20by%20year-2.png" width="672" /></p>
+</div>
+<div id="total-per-month" class="section level1">
+<h1>Total per month</h1>
 <pre class="r"><code>monthly_data &lt;- data %&gt;%
   group_by(month) %&gt;%
   summarise(sum_forb = sum(forbruk))
@@ -467,6 +475,7 @@ year_month &lt;- data %&gt;%
   ylab(&quot;Total power usage per month&quot;) +
   xlab(&quot;&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/Total%20per%20month-1.png" width="672" /></p>
+</div>
 
 
 

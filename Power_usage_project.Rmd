@@ -40,6 +40,8 @@ data <- clean_and_prepare(power_data)
 head(data)
 ```
 
+# Basic plot
+
 Let's try a simple plot of all the observations.
 ```{r Messy plot, warning=FALSE, message=FALSE}
 p_simple <- ggplot(data, aes(x = tid, y = forbruk)) + 
@@ -62,6 +64,8 @@ This certainly looks smooth, but it's still looking quite messy. I'll try to add
 
 -----also comment on missing values------
 
+
+# Average per weekday
 
 Another option is to try to group the data by some time period by summing or averaging it.
 
@@ -90,6 +94,8 @@ ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
   xlab("")
 ```
 
+
+# Total per month
 
 ```{r, warning=FALSE, message=FALSE}
 monthly_data <- data %>%
