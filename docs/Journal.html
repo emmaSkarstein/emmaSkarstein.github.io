@@ -11,7 +11,7 @@
 
 
 
-<title>Journal</title>
+<title>Power usage analysis</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -368,12 +368,93 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Journal</h1>
+<h1 class="title toc-ignore">Power usage analysis</h1>
 
 </div>
 
 
-<p>Temporary page</p>
+<p>Latest update: 25.01.2021</p>
+<p>Welcome to my power usage project! Through the fantastic service <a href="https://www.elhub.no/">elhub</a> I have downloaded (and continue to download) monthly data sets that contain the hourly power usage in my appartment. I made an <a href="https://github.com/emmaSkarstein/power.usage.analysis">R-package</a> that contains all the data plus some useful functions. Here I will explore some visualisations of the data.</p>
+<pre class="r"><code>library(power.usage.analysis)
+library(ggplot2)
+library(dplyr)</code></pre>
+<pre class="r"><code>theme_set(theme_minimal())</code></pre>
+<p>First, let us load the data and look at the structure of it.</p>
+<pre class="r"><code>summary(power_data)</code></pre>
+<pre><code>##      Fra                Til            KWH.60.Forbruk 
+##  Length:17233       Length:17233       Min.   :0.000  
+##  Class :character   Class :character   1st Qu.:0.286  
+##  Mode  :character   Mode  :character   Median :0.886  
+##                                        Mean   :1.220  
+##                                        3rd Qu.:1.935  
+##                                        Max.   :6.666  
+##                                        NA&#39;s   :1      
+##  X...code.to.prepare..DATASET..dataset.goes.here
+##  Length:17233                                   
+##  Class :character                               
+##  Mode  :character                               
+##                                                 
+##                                                 
+##                                                 
+## </code></pre>
+<p>This is already quite clean and nice, but we can do better. The function <code>clean_and_prepare</code> will add some new columns giving the year, month and weekday of each observation. In addition, we will format the date so R recognizes it as such.</p>
+<pre class="r"><code>?clean_and_prepare</code></pre>
+<pre class="r"><code>data &lt;- clean_and_prepare(power_data)</code></pre>
+<pre class="r"><code>head(data)</code></pre>
+<pre><code>##                      tid forbruk       date month weekday year
+## ...1 2019-01-14 00:00:00   0.338 2019-01-13     1  Monday 2019
+## ...2 2019-01-14 01:00:00   1.047 2019-01-14     1  Monday 2019
+## ...3 2019-01-14 02:00:00   0.327 2019-01-14     1  Monday 2019
+## ...4 2019-01-14 03:00:00   1.475 2019-01-14     1  Monday 2019
+## ...5 2019-01-14 04:00:00   2.791 2019-01-14     1  Monday 2019
+## ...6 2019-01-14 05:00:00   3.286 2019-01-14     1  Monday 2019</code></pre>
+<p>Let’s try a simple plot of all the observations.</p>
+<pre class="r"><code>p_simple &lt;- ggplot(data, aes(x = tid, y = forbruk)) + 
+  geom_line() +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;)
+p_simple</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>This is a mess. While we do see some general tendencies that are interesting (like maximum consumption varying seasonally), it is difficult to tell what is going on in all the noise. Maybe we can smooth it?</p>
+<pre class="r"><code>p_simple + geom_smooth(color = &quot;darkorange&quot;)</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>This certainly looks smooth, but it’s still looking quite messy. I’ll try to add a better theme than the default.</p>
+<p>—-add theme—-</p>
+<p>—–also comment on missing values——</p>
+<p>Another option is to try to group the data by some time period by summing or averaging it.</p>
+<p>Let’s first see if there seems to be any difference in consumption for each weekday.</p>
+<pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk)) +
+  geom_violin(fill = &quot;darkorange&quot;) +
+  geom_boxplot(width=0.1) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;)</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Okay, it pretty much looks like the distribution is the same for each week day, maybe not surprisingly, although I might have expected the consumption to be a bit higher during the week-end. However, during most of 2020 we worked from home. Could it be that this is affecting the results, and that weekday differences were larger in 2019? Let’s investigate:</p>
+<pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
+  geom_violin() +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;)</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
+  geom_boxplot() +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;)</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<pre class="r"><code>monthly_data &lt;- data %&gt;%
+  group_by(month) %&gt;%
+  summarise(sum_forb = sum(forbruk))
+
+year_month &lt;- data %&gt;%
+  group_by(month, year) %&gt;%
+  summarise(sum_forb = sum(forbruk))</code></pre>
+<pre class="r"><code>ggplot(year_month, aes(x = month, y = sum_forb)) +
+  geom_col(aes(fill = year), color = &quot;black&quot;, position = &quot;dodge&quot;) +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+  ylab(&quot;Total power usage per month&quot;) +
+  xlab(&quot;&quot;)</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 
 
 

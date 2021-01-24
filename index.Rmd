@@ -23,9 +23,6 @@ output: html_document
 
 This will be my webpage to share documents and similar stuff as easily as possible.
 
-
-In order to set up this website I have used the template provided by [Matt Crump](https://crumplab.github.io), thanks!
-
 </div>
 <div class="col-sm-6">
 

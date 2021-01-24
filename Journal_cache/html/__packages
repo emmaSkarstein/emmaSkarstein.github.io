@@ -1,1 +1,4 @@
 base
+power.usage.analysis
+ggplot2
+dplyr
