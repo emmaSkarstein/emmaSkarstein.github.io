@@ -7,11 +7,11 @@ output:
     collapsed: false
     number_sections: false
     toc_depth: 1
-    #code_folding: hide
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+knitr::opts_chunk$set(message=FALSE,warning=FALSE)
 ```
 Latest update: `r format(Sys.Date(), "%d.%m.%Y")`
 
@@ -22,9 +22,7 @@ Welcome to my power usage project! Through the fantastic service [elhub](https:/
 library(power.usage.analysis)
 library(ggplot2)
 library(dplyr)
-```
 
-```{r}
 theme_set(theme_minimal())
 ```
 
@@ -38,19 +36,12 @@ summary(power_data)
 This is already quite clean and nice, but we can do better. The function `clean_and_prepare` will add some new columns giving the year, month and weekday of each observation. In addition, we will format the date so R recognizes it as such.
 
 ```{r, warning=FALSE, message=FALSE}
-?clean_and_prepare
-```
-
-```{r, warning=FALSE, message=FALSE}
 data <- clean_and_prepare(power_data)
-```
-
-```{r, warning=FALSE, message=FALSE}
 head(data)
 ```
 
 Let's try a simple plot of all the observations.
-```{r, warning=FALSE, message=FALSE}
+```{r Messy plot, warning=FALSE, message=FALSE}
 p_simple <- ggplot(data, aes(x = tid, y = forbruk)) + 
   geom_line() +
   ylab("Power usage") +
@@ -60,7 +51,7 @@ p_simple
 
 This is a mess. While we do see some general tendencies that are interesting (like maximum consumption varying seasonally), it is difficult to tell what is going on in all the noise. Maybe we can smooth it?
 
-```{r, warning=FALSE, message=FALSE}
+```{r Smoothed plot, warning=FALSE, message=FALSE}
 p_simple + geom_smooth(color = "darkorange")
 ```
 
@@ -75,18 +66,17 @@ This certainly looks smooth, but it's still looking quite messy. I'll try to add
 Another option is to try to group the data by some time period by summing or averaging it.
 
 Let's first see if there seems to be any difference in consumption for each weekday. 
-```{r, warning=FALSE, message=FALSE}
+```{r Average per weekday, warning=FALSE, message=FALSE}
 ggplot(data, aes(x = weekday, y = forbruk)) +
   geom_violin(fill = "darkorange") +
   geom_boxplot(width=0.1) +
   ylab("Power usage") +
   xlab("")
-
 ```
 
 Okay, it pretty much looks like the distribution is the same for each week day, maybe not surprisingly, although I might have expected the consumption to be a bit higher during the week-end. However, during most of 2020 we worked from home. Could it be that this is affecting the results, and that weekday differences were larger in 2019? Let's investigate:
 
-```{r, warning=FALSE, message=FALSE}
+```{r Average per weekday by year, warning=FALSE, message=FALSE}
 ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
   geom_violin() +
   scale_fill_brewer(palette = "Dark2") +
@@ -112,7 +102,7 @@ year_month <- data %>%
 ```
 
 
-```{r, warning=FALSE, message=FALSE}
+```{r Total per month, warning=FALSE, message=FALSE}
 ggplot(year_month, aes(x = month, y = sum_forb)) +
   geom_col(aes(fill = year), color = "black", position = "dodge") +
   scale_fill_brewer(palette = "Dark2") +

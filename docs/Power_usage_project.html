@@ -23,6 +23,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -248,6 +249,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -366,6 +370,14 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Power usage analysis</h1>
@@ -377,8 +389,9 @@ div.tocify {
 <p>Welcome to my power usage project! Through the fantastic service <a href="https://www.elhub.no/">elhub</a> I have downloaded (and continue to download) monthly data sets that contain the hourly power usage in my appartment. I made an <a href="https://github.com/emmaSkarstein/power.usage.analysis">R-package</a> that contains all the data plus some useful functions. Here I will explore some visualisations of the data.</p>
 <pre class="r"><code>library(power.usage.analysis)
 library(ggplot2)
-library(dplyr)</code></pre>
-<pre class="r"><code>theme_set(theme_minimal())</code></pre>
+library(dplyr)
+
+theme_set(theme_minimal())</code></pre>
 <p>First, let us load the data and look at the structure of it.</p>
 <pre class="r"><code>summary(power_data)</code></pre>
 <pre><code>##      Fra                Til            KWH.60.Forbruk 
@@ -398,9 +411,8 @@ library(dplyr)</code></pre>
 ##                                                 
 ## </code></pre>
 <p>This is already quite clean and nice, but we can do better. The function <code>clean_and_prepare</code> will add some new columns giving the year, month and weekday of each observation. In addition, we will format the date so R recognizes it as such.</p>
-<pre class="r"><code>?clean_and_prepare</code></pre>
-<pre class="r"><code>data &lt;- clean_and_prepare(power_data)</code></pre>
-<pre class="r"><code>head(data)</code></pre>
+<pre class="r"><code>data &lt;- clean_and_prepare(power_data)
+head(data)</code></pre>
 <pre><code>##                      tid forbruk       date month weekday year
 ## ...1 2019-01-14 00:00:00   0.338 2019-01-13     1  Monday 2019
 ## ...2 2019-01-14 01:00:00   1.047 2019-01-14     1  Monday 2019
@@ -414,10 +426,10 @@ library(dplyr)</code></pre>
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)
 p_simple</code></pre>
-<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/Messy%20plot-1.png" width="672" /></p>
 <p>This is a mess. While we do see some general tendencies that are interesting (like maximum consumption varying seasonally), it is difficult to tell what is going on in all the noise. Maybe we can smooth it?</p>
 <pre class="r"><code>p_simple + geom_smooth(color = &quot;darkorange&quot;)</code></pre>
-<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/Smoothed%20plot-1.png" width="672" /></p>
 <p>This certainly looks smooth, but it’s still looking quite messy. I’ll try to add a better theme than the default.</p>
 <p>—-add theme—-</p>
 <p>—–also comment on missing values——</p>
@@ -428,20 +440,20 @@ p_simple</code></pre>
   geom_boxplot(width=0.1) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/Average%20per%20weekday-1.png" width="672" /></p>
 <p>Okay, it pretty much looks like the distribution is the same for each week day, maybe not surprisingly, although I might have expected the consumption to be a bit higher during the week-end. However, during most of 2020 we worked from home. Could it be that this is affecting the results, and that weekday differences were larger in 2019? Let’s investigate:</p>
 <pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
   geom_violin() +
   scale_fill_brewer(palette = &quot;Dark2&quot;) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/Average%20per%20weekday%20by%20year-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
   geom_boxplot() +
   scale_fill_brewer(palette = &quot;Dark2&quot;) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/Average%20per%20weekday%20by%20year-2.png" width="672" /></p>
 <pre class="r"><code>monthly_data &lt;- data %&gt;%
   group_by(month) %&gt;%
   summarise(sum_forb = sum(forbruk))
@@ -454,7 +466,7 @@ year_month &lt;- data %&gt;%
   scale_fill_brewer(palette = &quot;Dark2&quot;) +
   ylab(&quot;Total power usage per month&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/Total%20per%20month-1.png" width="672" /></p>
 
 
 
@@ -491,6 +503,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {
