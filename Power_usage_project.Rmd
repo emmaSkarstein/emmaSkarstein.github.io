@@ -15,7 +15,7 @@ knitr::opts_chunk$set(message=FALSE,warning=FALSE)
 ```
 Latest update: `r format(Sys.Date(), "%d.%m.%Y")`
 
-Welcome to my power usage project! Through the fantastic service [elhub](https://www.elhub.no/) I have downloaded (and continue to download) monthly data sets that contain the hourly power usage in my appartment. I made an [R-package](https://github.com/emmaSkarstein/power.usage.analysis) that contains all the data plus some useful functions. Here I will explore some visualisations of the data.
+Welcome to my power usage project! Through the fantastic service [elhub](https://www.elhub.no/) I have downloaded (and will continue to download) monthly data sets containing the hourly power usage in my appartment. I made an [R-package](https://github.com/emmaSkarstein/power.usage.analysis) that contains all the data plus some useful functions. Here I will explore some visualisations of the data.
 
 
 ```{r, warning=FALSE, message=FALSE}
