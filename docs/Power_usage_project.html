@@ -351,7 +351,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="Journal.html">Journal</a>
+  <a href="Power_usage_project.html">Power usage project</a>
 </li>
 <li>
   <a href="Measurement_error_simulations.html">Measurement error simulations</a>
@@ -414,10 +414,10 @@ library(dplyr)</code></pre>
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)
 p_simple</code></pre>
-<p><img src="Journal_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>This is a mess. While we do see some general tendencies that are interesting (like maximum consumption varying seasonally), it is difficult to tell what is going on in all the noise. Maybe we can smooth it?</p>
 <pre class="r"><code>p_simple + geom_smooth(color = &quot;darkorange&quot;)</code></pre>
-<p><img src="Journal_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>This certainly looks smooth, but it’s still looking quite messy. I’ll try to add a better theme than the default.</p>
 <p>—-add theme—-</p>
 <p>—–also comment on missing values——</p>
@@ -428,20 +428,20 @@ p_simple</code></pre>
   geom_boxplot(width=0.1) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Journal_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>Okay, it pretty much looks like the distribution is the same for each week day, maybe not surprisingly, although I might have expected the consumption to be a bit higher during the week-end. However, during most of 2020 we worked from home. Could it be that this is affecting the results, and that weekday differences were larger in 2019? Let’s investigate:</p>
 <pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
   geom_violin() +
   scale_fill_brewer(palette = &quot;Dark2&quot;) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Journal_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
   geom_boxplot() +
   scale_fill_brewer(palette = &quot;Dark2&quot;) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Journal_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 <pre class="r"><code>monthly_data &lt;- data %&gt;%
   group_by(month) %&gt;%
   summarise(sum_forb = sum(forbruk))
@@ -454,7 +454,7 @@ year_month &lt;- data %&gt;%
   scale_fill_brewer(palette = &quot;Dark2&quot;) +
   ylab(&quot;Total power usage per month&quot;) +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="Journal_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 
 
 
