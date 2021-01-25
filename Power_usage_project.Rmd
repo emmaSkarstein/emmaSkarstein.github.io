@@ -29,14 +29,10 @@ theme_set(theme_minimal())
 
 First, let us load the data and look at the structure of it.
 
-```{r, warning=FALSE, message=FALSE}
-summary(power_data)
-```
-
-This is already quite clean and nice, but we can do better. The function `clean_and_prepare` will add some new columns giving the year, month and weekday of each observation. In addition, we will format the date so R recognizes it as such.
 
 ```{r, warning=FALSE, message=FALSE}
 data <- clean_and_prepare(power_data)
+data$hour <- format(data$tid, format = "%H:%M:%S")
 head(data)
 ```
 
@@ -115,4 +111,17 @@ ggplot(year_month, aes(x = month, y = sum_forb)) +
   ylab("Total power usage per month") +
   xlab("")
 ```
+
+
+# Usage throughout the day
+
+```{r}
+ggplot(data, aes(x = hour, y = forbruk, fill = year)) +
+  geom_boxplot() +
+  scale_fill_brewer(palette = "Dark2") +
+  ylab("Power usage") +
+  xlab("") +
+  theme(axis.text.x = element_text(angle = 45))
+```
+
 

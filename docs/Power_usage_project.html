@@ -393,33 +393,16 @@ library(dplyr)
 
 theme_set(theme_minimal())</code></pre>
 <p>First, let us load the data and look at the structure of it.</p>
-<pre class="r"><code>summary(power_data)</code></pre>
-<pre><code>##      Fra                Til            KWH.60.Forbruk 
-##  Length:17233       Length:17233       Min.   :0.000  
-##  Class :character   Class :character   1st Qu.:0.286  
-##  Mode  :character   Mode  :character   Median :0.886  
-##                                        Mean   :1.220  
-##                                        3rd Qu.:1.935  
-##                                        Max.   :6.666  
-##                                        NA&#39;s   :1      
-##  X...code.to.prepare..DATASET..dataset.goes.here
-##  Length:17233                                   
-##  Class :character                               
-##  Mode  :character                               
-##                                                 
-##                                                 
-##                                                 
-## </code></pre>
-<p>This is already quite clean and nice, but we can do better. The function <code>clean_and_prepare</code> will add some new columns giving the year, month and weekday of each observation. In addition, we will format the date so R recognizes it as such.</p>
 <pre class="r"><code>data &lt;- clean_and_prepare(power_data)
+data$hour &lt;- format(data$tid, format = &quot;%H:%M:%S&quot;)
 head(data)</code></pre>
-<pre><code>##                      tid forbruk       date month weekday year
-## ...1 2019-01-14 00:00:00   0.338 2019-01-13     1  Monday 2019
-## ...2 2019-01-14 01:00:00   1.047 2019-01-14     1  Monday 2019
-## ...3 2019-01-14 02:00:00   0.327 2019-01-14     1  Monday 2019
-## ...4 2019-01-14 03:00:00   1.475 2019-01-14     1  Monday 2019
-## ...5 2019-01-14 04:00:00   2.791 2019-01-14     1  Monday 2019
-## ...6 2019-01-14 05:00:00   3.286 2019-01-14     1  Monday 2019</code></pre>
+<pre><code>##                      tid forbruk       date month weekday year     hour
+## ...1 2019-01-14 00:00:00   0.338 2019-01-13     1  Monday 2019 00:00:00
+## ...2 2019-01-14 01:00:00   1.047 2019-01-14     1  Monday 2019 01:00:00
+## ...3 2019-01-14 02:00:00   0.327 2019-01-14     1  Monday 2019 02:00:00
+## ...4 2019-01-14 03:00:00   1.475 2019-01-14     1  Monday 2019 03:00:00
+## ...5 2019-01-14 04:00:00   2.791 2019-01-14     1  Monday 2019 04:00:00
+## ...6 2019-01-14 05:00:00   3.286 2019-01-14     1  Monday 2019 05:00:00</code></pre>
 <div id="basic-plot" class="section level1">
 <h1>Basic plot</h1>
 <p>Let’s try a simple plot of all the observations.</p>
@@ -475,6 +458,16 @@ year_month &lt;- data %&gt;%
   ylab(&quot;Total power usage per month&quot;) +
   xlab(&quot;&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/Total%20per%20month-1.png" width="672" /></p>
+</div>
+<div id="usage-throughout-the-day" class="section level1">
+<h1>Usage throughout the day</h1>
+<pre class="r"><code>ggplot(data, aes(x = hour, y = forbruk, fill = year)) +
+  geom_boxplot() +
+  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;) +
+  theme(axis.text.x = element_text(angle = 45))</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 
 
