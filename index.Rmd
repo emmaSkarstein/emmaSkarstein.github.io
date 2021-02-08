@@ -19,9 +19,9 @@ output: html_document
 <div class="row" style="padding-top: 30px;">
 <div class="col-sm-6">
 
-# **My Webpage**
+# **Hello!**
 
-This will be my webpage to share documents and similar stuff as easily as possible.
+This is very much under construction, but I hope to use this page to share documents and similar stuff as easily as possible.
 
 </div>
 <div class="col-sm-6">

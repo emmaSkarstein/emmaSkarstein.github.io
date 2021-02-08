@@ -6,6 +6,6 @@ navbar:
       href: index.html
     - text: "Power usage project"
       href: Power_usage_project.html
-    - text: "Measurement error simulations"
-      href: Measurement_error_simulations.html
+    - text: "Mars missions"
+      href: Mars_missions.html
 output_dir: "docs"

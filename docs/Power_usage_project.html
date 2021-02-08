@@ -358,7 +358,7 @@ div.tocify {
   <a href="Power_usage_project.html">Power usage project</a>
 </li>
 <li>
-  <a href="Measurement_error_simulations.html">Measurement error simulations</a>
+  <a href="Mars_missions.html">Mars missions</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -385,8 +385,9 @@ div.tocify {
 </div>
 
 
-<p>Latest update: 27.01.2021</p>
-<p>Welcome to my power usage project! Through the fantastic service <a href="https://www.elhub.no/">elhub</a> I have downloaded (and will continue to download) monthly data sets containing the hourly power usage in my appartment. I made an <a href="https://github.com/emmaSkarstein/power.usage.analysis">R-package</a> that contains all the data plus some useful functions. Here I will explore some visualisations of the data.</p>
+<p>Latest update: 08.02.2021</p>
+<p>Welcome to my power usage project! Through <a href="https://www.elhub.no/">elhub</a> I have downloaded (and will continue to download) monthly data sets containing the hourly power usage in my appartment. I made an <a href="https://github.com/emmaSkarstein/power.usage.analysis">R-package</a> that contains all the data plus some useful functions. Here I will explore some visualisations of the data.</p>
+<p>My goal is to produce visualizations of these data that are easy to interpret for people without any particular statistical background. I this document I will be trying out different things and showing a bit of the process, so this is not meant to be a perfect finished product, rather a kind of documentation of the process.</p>
 <pre class="r"><code>#devtools::install_github(&quot;emmaSkarstein/power.usage.analysis&quot;)
 library(power.usage.analysis)
 library(ggplot2)
@@ -394,7 +395,8 @@ library(dplyr)
 library(hrbrthemes)
 library(ggridges)
 library(patchwork)
-
+library(jcolors)
+library(ggpubr)
 theme_set(theme_bw())</code></pre>
 <p>First, let us load the data and look at the structure of it.</p>
 <pre class="r"><code>data &lt;- clean_and_prepare(power_data)
@@ -416,23 +418,20 @@ head(data)</code></pre>
   xlab(&quot;&quot;)
 p_simple</code></pre>
 <p><img src="Power_usage_project_files/figure-html/Messy%20plot-1.png" width="672" /></p>
-<p>This is a mess. While we do see some general tendencies that are interesting (like maximum consumption varying seasonally), it is difficult to tell what is going on in all the noise. Maybe we can smooth it?</p>
-<pre class="r"><code>p_simple + geom_smooth(color = &quot;darkorange&quot;)</code></pre>
-<p><img src="Power_usage_project_files/figure-html/Smoothed%20plot-1.png" width="672" /></p>
-<p>This certainly looks smooth, but it’s still isn’t giving us a lot of information. It is also worth noting the really low values during August of 2020. This was due to some rare error with our power measuring device, and we had to have a guy from the company come fix it. I won’t be handling this in any special way, for now I will just treat them along with the rest of the data. It is worth noting that the values have not been set to zero or <code>NA</code>, instead they are just unrealistically low. If these kinds of problems with the measuring device was a common problem, this would be really frustrating, as there is no way of knowing then if the measurement is actually that low or if there is an error (although appearently we didn’t get charged less for this period, since they knew something was wrong they instead extrapolated from the previous correct values. I asked).</p>
+<p>This is a mess. While we do see some general tendencies that are interesting (like maximum consumption varying seasonally), it is difficult to tell what is going on in all the noise. It is also worth noting the really low values during August of 2020. This was due to some error with our power measuring device, and we had to have a guy from the company come fix it. I won’t be handling this in any special way, for now I will just treat them along with the rest of the data. It is worth noting that the values have not been set to zero or <code>NA</code>, instead they are just unrealistically low. If these kinds of problems with the measuring device was a common problem, this would be really frustrating, as there is no way of knowing then if the measurement is actually that low or if there is an error (although appearently we didn’t get charged less for this period, since they knew something was wrong they instead extrapolated from the previous correct values).</p>
 </div>
 <div id="average-per-weekday---pitfalls-of-the-boxplot" class="section level1">
 <h1>Average per weekday - Pitfalls of the boxplot</h1>
 <p>Another option is to try to group the data by some time period by summing or averaging it. For instance, we can look at the power usage for each weekday. For this, we might be interested in looking at the average power consuption per day, which could easily be calculated. However, just calculating the average, without showing any information about the spread or variation in the observations, is not very good. And when we also have the option to display things graphically instead of just giving summary statistics, a boxplot is a common choice. In this case, a boxplot would look like this:</p>
 <pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk)) +
-  geom_boxplot(fill = &quot;darkorange&quot;) +
+  geom_boxplot(fill = &quot;hotpink3&quot;) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;) +
   annotate(&quot;text&quot;, x = 1, y = c(-0.1, 0.4, 0.75, 1.9, 4.5, 6), label = c(&quot;Minimum&quot;, &quot;25th percentile&quot;, &quot;Median&quot;, &quot;75th percentile&quot;, &quot;Maximum&quot;, &quot;Outliers&quot;), size = 2.2, fontface = &quot;bold&quot;, color= &quot;darkcyan&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>The boxplot displays a lot of information. The first thing I look at is the bold line in the middle of the orange box, which indicates the median (the 50th percentile) of the values in this group. The edges of the box indicate the 25th and 75th percentiles (25th percentile means the value that 25% of the observations lie below, and 75% lie above, and similarly for the 75th percentile). The ends of the “whiskers” show the minimum and maximum value of the data, excluding the outliers, and then the outliers are plotted explicitly.</p>
 <blockquote>
-<p>Since the <em>b</em> in boxplot is often capitalized, I thought it might have been named after the statistician George Box. This is not the case, though! In fact, the box plot (or plots with range-bars) was introduced by the data visualization specialist <a href="https://en.wikipedia.org/wiki/Mary_Eleanor_Spear">Mary Eleanor Spear</a>, first in her book <em>Charting statistics</em> in 1952.</p>
+<p>The box plot (or plots with range-bars) was introduced by the data visualization specialist <a href="https://en.wikipedia.org/wiki/Mary_Eleanor_Spear">Mary Eleanor Spear</a>, first in her book <em>Charting statistics</em> in 1952.</p>
 </blockquote>
 <p>From the above plot, it really doesn’t look to me like there are any real differences in power usage between each weekday. I would be ok with leaving it like this, but boxplots are a bit controversial, since they may easily show the same box plot for observations of very different distributions. See <a href="https://www.data-to-viz.com/caveat/boxplot.html">this nice article</a> for a further discussion of this. There are some ways to fix this, however. A simple fix to make sure we aren’t hiding any important information about the distribution of the data is to plot a jittered scatterplot on top. That would look like this for us:</p>
 <pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk)) +
@@ -444,21 +443,20 @@ p_simple</code></pre>
 <p>This is quite transparent, but in our case it looks chaotic since we have so many observations. It also does’t solve the problem that the boxplot is not immediately obvious if you have never seen one before, which I would say is a major disadvantage when visualizing data for most audiences.</p>
 <p>An alternative to the box-plot is the violin plot. Personally, I’m not a fan of the violin plot because I initially found the fact that it is symmetric around a center line to be a bit confusing. If I want the plot to be <em>really</em> easy to interpret, I find the ridge plot to be superior to both the boxplot and violin plot. Here is how it looks using the same data as above:</p>
 <pre class="r"><code>ggplot(data, aes(x = forbruk, y = weekday)) +
-  geom_density_ridges(alpha = 0.8, fill = &quot;darkorange&quot;) +
+  geom_density_ridges(alpha = 0.8, fill = &quot;hotpink3&quot;) +
   theme_ridges() +
-  scale_fill_brewer(palette = &quot;Dark2&quot;) +
   ylab(&quot;&quot;) +
   xlab(&quot;Power usage&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>—-some interpretation of this—-</p>
 <p>As a last point I just want to compare the boxplot, violin plot and ridge plot here for the reader, because I think preferences vary and it is interesting seeing the different options (note that I’ve flipped the axes on the two first so they are the same direction as the ridge plot).</p>
 <pre class="r"><code>p_box &lt;- ggplot(data, aes(y = weekday, x = forbruk)) +
-  geom_boxplot(fill = &quot;darkorange&quot;) +
+  geom_boxplot(fill = &quot;darkorange2&quot;) +
   xlab(&quot;&quot;) +
   ylab(&quot;&quot;)
 
 p_violin &lt;-ggplot(data, aes(y = weekday, x = forbruk)) +
-  geom_violin(fill = &quot;purple&quot;) +
+  geom_violin(fill = &quot;hotpink3&quot;) +
   xlab(&quot;&quot;) +
   ylab(&quot;&quot;) + 
   theme(axis.text.y = element_blank())
@@ -482,7 +480,7 @@ p_ridges &lt;- ggplot(data, aes(x = forbruk, y = weekday)) +
   xlab(&quot;&quot;) +
   scale_fill_brewer(palette = &quot;Dark2&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/Average%20per%20weekday%20by%20year-1.png" width="672" /></p>
-<p>There are some differences here, but I really do’nt think we can say for certain that there is a meaningful difference between the power consumption in 2019 and 2020 for any of the weekdays. This makes sense, because although we were probably more outside of the appartment in 2019, usually there would be at least one of us at home regardless, so the situation is not very different.</p>
+<p>There are some differences here, but I really don’t think we can say for certain that there is a meaningful difference between the power consumption in 2019 and 2020 for any of the weekdays. This makes sense, because although we were probably more outside of the appartment in 2019, usually there would be at least one of us at home regardless, so the situation is not very different.</p>
 </div>
 <div id="total-per-month" class="section level1">
 <h1>Total per month</h1>
@@ -494,7 +492,7 @@ p_ridges &lt;- ggplot(data, aes(x = forbruk, y = weekday)) +
 
 ggplot(year_month, aes(x = month, y = sum_forb)) +
   geom_col(aes(fill = year), color = &quot;black&quot;, position = &quot;dodge&quot;) +
-  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+  scale_fill_jcolors(palette = &quot;pal6&quot;) +
   ylab(&quot;Total power usage per month&quot;) +
   xlab(&quot;&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/Total%20per%20month-1.png" width="672" /></p>
@@ -509,7 +507,7 @@ ggplot(year_month, aes(x = month, y = sum_forb)) +
 
 ggplot(daily, aes(x = date, y = sum_forb)) +
   geom_point(size = 0.5) +
-  geom_line(alpha = 0.5, color = &quot;darkgreen&quot;) +
+  geom_line(alpha = 0.5, color = &quot;hotpink4&quot;) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;)</code></pre>
 <p><img src="Power_usage_project_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
@@ -517,14 +515,30 @@ ggplot(daily, aes(x = date, y = sum_forb)) +
 </div>
 <div id="usage-throughout-the-day" class="section level1">
 <h1>Usage throughout the day</h1>
-<p>As a final plot, I would like to know how the power usage is distributed throughout the day. Here I will try to do some fancier visualizations later on, since we can think of a day as a whole, split it up into equal sections (each one hour for instance) and then show by using the area of a column for instance, how large a part of the total daily power consumption was in that hour. For now though, this one is a bit easier:</p>
-<pre class="r"><code>ggplot(data, aes(x = hour, y = forbruk, fill = year)) +
-  geom_boxplot() +
-  scale_fill_brewer(palette = &quot;Dark2&quot;) +
+<p>As a final plot, I would like to know how the power usage is distributed throughout the day. First just a simple box plot:</p>
+<pre class="r"><code>ggplot(data, aes(x = hour, y = forbruk)) +
+  geom_boxplot(fill = &quot;hotpink3&quot;) +
   ylab(&quot;Power usage&quot;) +
   xlab(&quot;&quot;) +
   theme(axis.text.x = element_text(angle = 45))</code></pre>
 <p><img src="Power_usage_project_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>I also want to try a fancier, less detailed version that represents time periods with higher usage as larger areas. I have split the day into 4-hour intervals (should i use a finer resolution?), and the below plot shows the total power consumption in each time period. (Would it be better with a donut to represent the day as a cycle?) (would be nice to show the times on the plot somehow)</p>
+<pre class="r"><code># Adding grouped time column
+data &lt;- data %&gt;% mutate(grouped_time = 
+                          factor(floor(as.numeric(substr(hour, start = 1, stop = 2))/3)))
+
+ggplot(data, aes(x = 1, y = -forbruk, fill = grouped_time)) +
+  geom_col() +
+  scale_fill_brewer(labels = c(&quot;00:00 - 02:00&quot;, &quot;03:00 - 05:00&quot;, 
+                                 &quot;06:00 - 08:00&quot;, &quot;09:00 - 11:00&quot;, 
+                                 &quot;12:00 - 14:00&quot;, &quot;15:00 - 17:00&quot;,
+                                &quot;18:00 - 20:00&quot;, &quot;21:00 - 23:00&quot;),
+                    palette = &quot;BrBG&quot;) +
+  theme_transparent() +
+  coord_flip() +
+  theme(legend.position = &quot;bottom&quot;,
+        legend.title = element_blank())</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
 </div>
 
 
