@@ -157,7 +157,7 @@ ggplot(year_month, aes(x = month, y = sum_forb)) +
   xlab("")
 ```
 
-This mirrors the smoothed plot I made at the very beginning of this post, here we can sort of see the seasonal trend, and it seems very reasonable to me. I find it interesting that March is the month with the highest power consumption, I would not have guessed that in advance.
+Here we can sort of see the seasonal trend, and it seems very reasonable to me. I find it interesting that March is the month with the highest power consumption, I would not have guessed that in advance.
 
 # Daily usage
 There is another resolution between our first plot and the monthly total plot in the previous section: it might also be interesting to look at the total daily consumption. I expect this will be slightly smoother than the first plot, and it may be interesting to see the time-series day-by-day instead of grouped by month like above. 
@@ -188,7 +188,7 @@ ggplot(data, aes(x = hour, y = forbruk)) +
   theme(axis.text.x = element_text(angle = 45))
 ```
 
-I also want to try a fancier, less detailed version that represents time periods with higher usage as larger areas. I have split the day into 4-hour intervals (should i use a finer resolution?), and the below plot shows the total power consumption in each time period. (Would it be better with a donut to represent the day as a cycle?) (would be nice to show the times on the plot somehow)
+I also want to try a fancier, less detailed version that represents time periods with higher usage as larger areas. I have split the day into 3-hour intervals (should I use a finer resolution?), and the below plot shows the total power consumption in each time period. (Would it be better with a donut to represent the day as a cycle?) (would be nice to show the times on the plot somehow)
 ```{r, fig.height=2, fig.width = 8}
 # Adding grouped time column
 data <- data %>% mutate(grouped_time = 

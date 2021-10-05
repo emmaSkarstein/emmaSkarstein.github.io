@@ -1,0 +1,12 @@
+---
+title: "Customized themes in ggplot2"
+output:
+  html_document:
+    toc: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE)
+```
+
+![Cheatsheet themes](./images/Cheetsheet_emma.pdf){width=65%}
