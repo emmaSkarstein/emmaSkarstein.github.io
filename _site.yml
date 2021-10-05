@@ -7,5 +7,5 @@ navbar:
     - text: "Power usage project"
       href: Power_usage_project.html
     - text: "Customized themes in ggplot2"
-      href: custom_themes.html
+      href: ggplot2_resources.html
 output_dir: "docs"

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Power usage analysis</title>
+
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Emma Skarstein</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Power_usage_project.html">Power usage project</a>
+</li>
+<li>
+  <a href="custom_themes.html">Customized themes in ggplot2</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Power usage analysis</h1>
+
+</div>
+
+
+<p>Latest update: 05.10.2021</p>
+<p>Welcome to my power usage project! Through <a href="https://www.elhub.no/">elhub</a> I have downloaded (and will continue to download) monthly data sets containing the hourly power usage in my appartment. I made an <a href="https://github.com/emmaSkarstein/power.usage.analysis">R-package</a> that contains all the data plus some useful functions. Here I will explore some visualisations of the data.</p>
+<p>My goal is to produce visualizations of these data that are easy to interpret for people without any particular statistical background. I this document I will be trying out different things and showing a bit of the process, so this is not meant to be a perfect finished product, rather a kind of documentation of the process.</p>
+<pre class="r"><code>#devtools::install_github(&quot;emmaSkarstein/power.usage.analysis&quot;)
+library(power.usage.analysis)
+library(ggplot2)
+library(dplyr)
+library(hrbrthemes)
+library(ggridges)
+library(patchwork)
+library(jcolors)
+library(ggpubr)
+theme_set(theme_bw())</code></pre>
+<p>First, let us load the data and look at the structure of it.</p>
+<pre class="r"><code>data &lt;- clean_and_prepare(power_data)
+head(data)</code></pre>
+<pre><code>##                      tid forbruk       date month weekday year     hour
+## ...1 2019-01-14 00:00:00   0.338 2019-01-13     1  Monday 2019 00:00:00
+## ...2 2019-01-14 01:00:00   1.047 2019-01-14     1  Monday 2019 01:00:00
+## ...3 2019-01-14 02:00:00   0.327 2019-01-14     1  Monday 2019 02:00:00
+## ...4 2019-01-14 03:00:00   1.475 2019-01-14     1  Monday 2019 03:00:00
+## ...5 2019-01-14 04:00:00   2.791 2019-01-14     1  Monday 2019 04:00:00
+## ...6 2019-01-14 05:00:00   3.286 2019-01-14     1  Monday 2019 05:00:00</code></pre>
+<p>So our data cosists of the hourly power consumption, as well as columns giving the year, date, month, weekday and hour for each observation. Now I want to explore some visualizations.</p>
+<div id="basic-plot" class="section level1">
+<h1>Basic plot</h1>
+<p>Let’s first try a simple plot of all the observations.</p>
+<pre class="r"><code>p_simple &lt;- ggplot(data, aes(x = tid, y = forbruk)) + 
+  geom_line() +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;)
+p_simple</code></pre>
+<p><img src="Power_usage_project_files/figure-html/Messy%20plot-1.png" width="672" /></p>
+<p>This is a mess. While we do see some general tendencies that are interesting (like maximum consumption varying seasonally), it is difficult to tell what is going on in all the noise. It is also worth noting the really low values during August of 2020. This was due to some error with our power measuring device, and we had to have a guy from the company come fix it. I won’t be handling this in any special way, for now I will just treat them along with the rest of the data. It is worth noting that the values have not been set to zero or <code>NA</code>, instead they are just unrealistically low. If these kinds of problems with the measuring device was a common problem, this would be really frustrating, as there is no way of knowing then if the measurement is actually that low or if there is an error (although appearently we didn’t get charged less for this period, since they knew something was wrong they instead extrapolated from the previous correct values).</p>
+</div>
+<div id="average-per-weekday---pitfalls-of-the-boxplot" class="section level1">
+<h1>Average per weekday - Pitfalls of the boxplot</h1>
+<p>Another option is to try to group the data by some time period by summing or averaging it. For instance, we can look at the power usage for each weekday. For this, we might be interested in looking at the average power consuption per day, which could easily be calculated. However, just calculating the average, without showing any information about the spread or variation in the observations, is not very good. And when we also have the option to display things graphically instead of just giving summary statistics, a boxplot is a common choice. In this case, a boxplot would look like this:</p>
+<pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk)) +
+  geom_boxplot(fill = &quot;hotpink3&quot;) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;) +
+  annotate(&quot;text&quot;, x = 1, y = c(-0.1, 0.4, 0.75, 1.9, 4.5, 6), label = c(&quot;Minimum&quot;, &quot;25th percentile&quot;, &quot;Median&quot;, &quot;75th percentile&quot;, &quot;Maximum&quot;, &quot;Outliers&quot;), size = 2.2, fontface = &quot;bold&quot;, color= &quot;darkcyan&quot;)</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The boxplot displays a lot of information. The first thing I look at is the bold line in the middle of the orange box, which indicates the median (the 50th percentile) of the values in this group. The edges of the box indicate the 25th and 75th percentiles (25th percentile means the value that 25% of the observations lie below, and 75% lie above, and similarly for the 75th percentile). The ends of the “whiskers” show the minimum and maximum value of the data, excluding the outliers, and then the outliers are plotted explicitly.</p>
+<blockquote>
+<p>The box plot (or plots with range-bars) was introduced by the data visualization specialist <a href="https://en.wikipedia.org/wiki/Mary_Eleanor_Spear">Mary Eleanor Spear</a>, first in her book <em>Charting statistics</em> in 1952.</p>
+</blockquote>
+<p>From the above plot, it really doesn’t look to me like there are any real differences in power usage between each weekday. I would be ok with leaving it like this, but boxplots are a bit controversial, since they may easily show the same box plot for observations of very different distributions. See <a href="https://www.data-to-viz.com/caveat/boxplot.html">this nice article</a> for a further discussion of this. There are some ways to fix this, however. A simple fix to make sure we aren’t hiding any important information about the distribution of the data is to plot a jittered scatterplot on top. That would look like this for us:</p>
+<pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk)) +
+  geom_boxplot(fill = &quot;darkorange&quot;) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;) +
+  geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9)</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>This is quite transparent, but in our case it looks chaotic since we have so many observations. It also does’t solve the problem that the boxplot is not immediately obvious if you have never seen one before, which I would say is a major disadvantage when visualizing data for most audiences.</p>
+<p>An alternative to the box-plot is the violin plot. Personally, I’m not a fan of the violin plot because I initially found the fact that it is symmetric around a center line to be a bit confusing. If I want the plot to be <em>really</em> easy to interpret, I find the ridge plot to be superior to both the boxplot and violin plot. Here is how it looks using the same data as above:</p>
+<pre class="r"><code>ggplot(data, aes(x = forbruk, y = weekday)) +
+  geom_density_ridges(alpha = 0.8, fill = &quot;hotpink3&quot;) +
+  theme_ridges() +
+  ylab(&quot;&quot;) +
+  xlab(&quot;Power usage&quot;)</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>—-some interpretation of this—-</p>
+<p>As a last point I just want to compare the boxplot, violin plot and ridge plot here for the reader, because I think preferences vary and it is interesting seeing the different options (note that I’ve flipped the axes on the two first so they are the same direction as the ridge plot).</p>
+<pre class="r"><code>p_box &lt;- ggplot(data, aes(y = weekday, x = forbruk)) +
+  geom_boxplot(fill = &quot;darkorange2&quot;) +
+  xlab(&quot;&quot;) +
+  ylab(&quot;&quot;)
+
+p_violin &lt;-ggplot(data, aes(y = weekday, x = forbruk)) +
+  geom_violin(fill = &quot;hotpink3&quot;) +
+  xlab(&quot;&quot;) +
+  ylab(&quot;&quot;) + 
+  theme(axis.text.y = element_blank())
+
+p_ridges &lt;- ggplot(data, aes(x = forbruk, y = weekday)) +
+  geom_density_ridges(alpha = 0.8, fill = &quot;darkgreen&quot;) +
+  ylab(&quot;&quot;) +
+  xlab(&quot;&quot;) +
+  theme(axis.text.y = element_blank())
+
+(p_box + p_violin + xlab(&quot;Power usage&quot;) + p_ridges) </code></pre>
+<p><img src="Power_usage_project_files/figure-html/Boxplot%20and%20violin%20and%20ridge-1.png" width="672" /></p>
+<p>Okay, it pretty much looks like the distribution is the same for each week day, maybe not surprisingly, although I might have expected the consumption to be a bit higher during the week-end. Really kind of boring.</p>
+</div>
+<div id="did-the-pandemic-affect-power-usage-for-each-weekday" class="section level1">
+<h1>Did the pandemic affect power usage for each weekday?</h1>
+<p>However, during most of 2020 we worked from home. Could it be that this is affecting the results, and that weekday differences were larger in 2019? Let’s investigate.</p>
+<pre class="r"><code>ggplot(data, aes(x = weekday, y = forbruk, fill = year)) +
+  geom_boxplot() +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;) +
+  scale_fill_brewer(palette = &quot;Dark2&quot;)</code></pre>
+<p><img src="Power_usage_project_files/figure-html/Average%20per%20weekday%20by%20year-1.png" width="672" /></p>
+<p>There are some differences here, but I really don’t think we can say for certain that there is a meaningful difference between the power consumption in 2019 and 2020 for any of the weekdays. This makes sense, because although we were probably more outside of the appartment in 2019, usually there would be at least one of us at home regardless, so the situation is not very different.</p>
+</div>
+<div id="total-per-month" class="section level1">
+<h1>Total per month</h1>
+<p>Inspired by the weekday plots, I want to examine if the total monthly power consumption has changed between 2019 and 2020. Instead of looking at the median, average or some other measure per month, I will simply look at the total power consumption per month in 2019, and separately in 2020, since a month is a continuous stretch of time. Had I been looking at monthly consumption not separated by year, however, I would have calculated the average total monthly consumption across those years. Maybe that will be interesting once I have data from more than just two years.</p>
+<p>Anyway – here is the total power usage per month for 2019 and 2020. This is also the plot that our power provider shows me on their webpage, and I feel like it is particularly useful for just seeing how much we use. Of course – some months are longer than others, so it is not completely fair to compare between the months, but it certainly gives a rough impression.</p>
+<pre class="r"><code>year_month &lt;- data %&gt;%
+  group_by(month, year) %&gt;%
+  summarise(sum_forb = sum(forbruk))
+
+ggplot(year_month, aes(x = month, y = sum_forb)) +
+  geom_col(aes(fill = year), color = &quot;black&quot;, position = &quot;dodge&quot;) +
+  scale_fill_jcolors(palette = &quot;pal6&quot;) +
+  ylab(&quot;Total power usage per month&quot;) +
+  xlab(&quot;&quot;)</code></pre>
+<p><img src="Power_usage_project_files/figure-html/Total%20per%20month-1.png" width="672" /></p>
+<p>Here we can sort of see the seasonal trend, and it seems very reasonable to me. I find it interesting that March is the month with the highest power consumption, I would not have guessed that in advance.</p>
+</div>
+<div id="daily-usage" class="section level1">
+<h1>Daily usage</h1>
+<p>There is another resolution between our first plot and the monthly total plot in the previous section: it might also be interesting to look at the total daily consumption. I expect this will be slightly smoother than the first plot, and it may be interesting to see the time-series day-by-day instead of grouped by month like above.</p>
+<pre class="r"><code>daily &lt;- data %&gt;%
+  group_by(date) %&gt;%
+  summarise(sum_forb = sum(forbruk))
+
+ggplot(daily, aes(x = date, y = sum_forb)) +
+  geom_point(size = 0.5) +
+  geom_line(alpha = 0.5, color = &quot;hotpink4&quot;) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;)</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Here we see more of the variation between different days in the same month. I would really have liked to know what happened on those peak days.</p>
+</div>
+<div id="usage-throughout-the-day" class="section level1">
+<h1>Usage throughout the day</h1>
+<p>As a final plot, I would like to know how the power usage is distributed throughout the day. First just a simple box plot:</p>
+<pre class="r"><code>ggplot(data, aes(x = hour, y = forbruk)) +
+  geom_boxplot(fill = &quot;hotpink3&quot;) +
+  ylab(&quot;Power usage&quot;) +
+  xlab(&quot;&quot;) +
+  theme(axis.text.x = element_text(angle = 45))</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>I also want to try a fancier, less detailed version that represents time periods with higher usage as larger areas. I have split the day into 3-hour intervals (should I use a finer resolution?), and the below plot shows the total power consumption in each time period. (Would it be better with a donut to represent the day as a cycle?) (would be nice to show the times on the plot somehow)</p>
+<pre class="r"><code># Adding grouped time column
+data &lt;- data %&gt;% mutate(grouped_time = 
+                          factor(floor(as.numeric(substr(hour, start = 1, stop = 2))/3)))
+
+ggplot(data, aes(x = 1, y = -forbruk, fill = grouped_time)) +
+  geom_col() +
+  scale_fill_brewer(labels = c(&quot;00:00 - 02:00&quot;, &quot;03:00 - 05:00&quot;, 
+                                 &quot;06:00 - 08:00&quot;, &quot;09:00 - 11:00&quot;, 
+                                 &quot;12:00 - 14:00&quot;, &quot;15:00 - 17:00&quot;,
+                                &quot;18:00 - 20:00&quot;, &quot;21:00 - 23:00&quot;),
+                    palette = &quot;BrBG&quot;) +
+  theme_transparent() +
+  coord_flip() +
+  theme(legend.position = &quot;bottom&quot;,
+        legend.title = element_blank())</code></pre>
+<p><img src="Power_usage_project_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
