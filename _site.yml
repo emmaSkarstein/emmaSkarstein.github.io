@@ -6,6 +6,6 @@ navbar:
       href: index.html
     - text: "Power usage project"
       href: Power_usage_project.html
-    - text: "Customized themes in ggplot2"
+    - text: "My ggplot2 resources"
       href: ggplot2_resources.html
 output_dir: "docs"
