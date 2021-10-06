@@ -5,13 +5,7 @@ description: |
 output_dir: "docs"
 navbar:
   right:
-    - text: "Projects"
-      menu:
-        - text: "Power usage visualization"
-          href: Power_usage_project.html
-    - text: "My ggplot2 resources"
-      href: ggplot2_resources.html
-    - text: "Posters and presentations"
-      href: posters_presentations.html
+    - text: "Portfolio"
+      href: portfolio.html
 output: distill::distill_article
 
