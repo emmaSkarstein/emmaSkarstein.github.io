@@ -5,7 +5,7 @@ description: |
 output_dir: "docs"
 navbar:
   right:
-    - text: "Github"
+    - icon: fab fa-github
       href: "https://github.com/emmaSkarstein"
 output: distill::distill_article
 
