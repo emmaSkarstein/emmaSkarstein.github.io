@@ -1,11 +1,17 @@
-name: "Emma Skarstein"
+name: "distill_website"
+title: "Emma Skarstein"
+description: |
+  Emma Skarstein
+output_dir: "_site"
 navbar:
-  title: "Emma Skarstein"
-  left:
-    - text: "Home"
-      href: index.html
-    - text: "Power usage project"
-      href: Power_usage_project.html
+  right:
+    - text: "Projects"
+      menu:
+        - text: "Power usage visualization"
+          href: Power_usage_project.html
     - text: "My ggplot2 resources"
       href: ggplot2_resources.html
-output_dir: "docs"
+    - text: "Posters and presentations"
+      href: posters_presentations.html
+output: distill::distill_article
+

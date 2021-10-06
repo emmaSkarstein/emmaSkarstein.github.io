@@ -11,9 +11,9 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(message=FALSE,warning=FALSE)
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, cache=TRUE)
 ```
-Latest update: `r format(Sys.Date(), "%d.%m.%Y")`
+Latest update: `r "January 25th 2021"`
 
 Welcome to my power usage project! Through [elhub](https://www.elhub.no/) I have downloaded (and will continue to download) monthly data sets containing the hourly power usage in my appartment. I made an [R-package](https://github.com/emmaSkarstein/power.usage.analysis) that contains all the data plus some useful functions. Here I will explore some visualisations of the data.
 

@@ -1,0 +1,9 @@
+base
+power.usage.analysis
+ggplot2
+dplyr
+hrbrthemes
+ggridges
+patchwork
+jcolors
+ggpubr

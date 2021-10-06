@@ -1,32 +1,25 @@
 ---
 title: "Emma Skarstein"
-output: html_document
+image: "images/tulip.png"
+links:
+  - label: Resumé
+    url: "https://www.linkedin.com/in/emma-sofie-skarstein-476510158/"
+  - label: Github
+    url: "https://github.com/emmaSkarstein"
+  - label: Email
+    url: "mailto:emma@skarstein.no"
+site: distill::distill_website
+output:
+  postcards::solana
 ---
 
-<style type="text/css">
-.title {
-  display: none;
-}
 
-#getting-started img {
-  margin-right: 10px;
-}
+ 
+## Description
 
-</style>
 
-<!-- Making a two-column output -->
+## Education
 
-<div class="row" style="padding-top: 30px;">
-<div class="col-sm-6">
 
-# **Hello!**
+**BOLD** | Regular
 
-This is very much under construction, but I hope to use this page to share documents and similar stuff as easily as possible.
-
-</div>
-<div class="col-sm-6">
-
-<a>
-![](images/tulip.png)
-</a>
-</div>
