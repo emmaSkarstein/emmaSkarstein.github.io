@@ -1,8 +1,8 @@
 ---
 title: "Emma Skarstein"
-image: "images/tulip.png"
+image: "images/emma_mattiniemi.jpg"
 links:
-  - label: Resumé
+  - label: LinkedIn
     url: "https://www.linkedin.com/in/emma-sofie-skarstein-476510158/"
   - label: Github
     url: "https://github.com/emmaSkarstein"
@@ -13,13 +13,25 @@ output:
   postcards::solana
 ---
 
+## BIO
 
+I'm a PhD student of statistics at the Norwegian University of Science and Technology (NTNU). I'm currently working with Bayesian methods for measurement error correction, using integrated nested Laplace approximation (INLA). Apart from that, I also really enjoy data visualization, specifically I use R programming language and the ggplot2 package for this. In my free time, I garden and play with my incredible cat Hermione ([who is an aspiring celebrity on Instagram](https://www.instagram.com/tiny.hermione.the.cat/)).
  
-## Description
+ 
+---
+## PORTFOLIO
+
+A wide selection of personal and professional work, including data visualizations, conference posters, presentation slides, and educational resources.
+
+#### My ggplot2 resources
+
+**[CREATING CUSTOM THEMES IN GGPLOT2](https://emmaskarstein.github.io/images/cheatsheets_themes.pdf)** | A cheatsheet created based on a presentation held for the NTNU statistics group coding group: "Moving beyond theme_gray: Exploring customized themes for improved visualizations in ggplot2"
+
+**[THE ANATOMY OF A GGPLOT2-PLOT](https://emmaskarstein.github.io/images/anatomy_of_ggplot.pdf)** | My reference for remembering all the different theme-variables in ggplot2.
+
+#### Posters
+
+**[A JOINT BAYESIAN FRAMEWORK FOR MEASUREMENT ERROR AND MISSING DATA](https://emmaskarstein.github.io/images/Poster_Nordstat.pdf)** | Poster presentation from Nordstat 2021 conference, "The 28th Nordic Conference in Mathematical Statistics"
 
 
-## Education
-
-
-**BOLD** | Regular
 
