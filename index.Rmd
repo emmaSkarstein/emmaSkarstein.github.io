@@ -19,19 +19,53 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
  
  
 ---
+
 ## PORTFOLIO
 
-A wide selection of personal and professional work, including data visualizations, conference posters, presentation slides, and educational resources.
+*A wide selection of personal and professional work, including data visualizations, conference posters, presentation slides, and educational resources.*
 
 #### My ggplot2 resources
 
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("images/small_cheatsheet.png")
+```
+
+:::
+
 **[CREATING CUSTOM THEMES IN GGPLOT2](https://emmaskarstein.github.io/images/cheatsheets_themes.pdf)** | A cheatsheet created based on a presentation held for the NTNU statistics group coding group: "Moving beyond theme_gray: Exploring customized themes for improved visualizations in ggplot2"
+
+.  
+
+.  
+
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("images/small_anatomy.png")
+```
+
+:::
 
 **[THE ANATOMY OF A GGPLOT2-PLOT](https://emmaskarstein.github.io/images/anatomy_of_ggplot.pdf)** | My reference for remembering all the different theme-variables in ggplot2.
 
+.  
+
+.  
+
 #### Posters
 
-**[A JOINT BAYESIAN FRAMEWORK FOR MEASUREMENT ERROR AND MISSING DATA](https://emmaskarstein.github.io/images/Poster_Nordstat.pdf)** | Poster presentation from Nordstat 2021 conference, "The 28th Nordic Conference in Mathematical Statistics"
+::: {.floatting}
 
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("images/small_poster_nordstat.png")
+```
+
+:::
+
+
+**[A JOINT BAYESIAN FRAMEWORK FOR MEASUREMENT ERROR AND MISSING DATA](https://emmaskarstein.github.io/images/Poster_Nordstat.pdf)** | Poster presentation from Nordstat 2021 conference, "The 28th Nordic Conference in Mathematical Statistics"
 
 
