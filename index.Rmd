@@ -28,7 +28,7 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
 
 ::: {.floatting}
 
-```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px"'}
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
 knitr::include_graphics("images/small_cheatsheet.png")
 ```
 
@@ -43,7 +43,7 @@ knitr::include_graphics("images/small_cheatsheet.png")
 
 ::: {.floatting}
 
-```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px"'}
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
 knitr::include_graphics("images/small_anatomy.png")
 ```
 
@@ -59,13 +59,29 @@ knitr::include_graphics("images/small_anatomy.png")
 
 ::: {.floatting}
 
-```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px"'}
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
 knitr::include_graphics("images/small_poster_nordstat.png")
 ```
 
 :::
 
 
-**[A JOINT BAYESIAN FRAMEWORK FOR MEASUREMENT ERROR AND MISSING DATA](https://emmaskarstein.github.io/images/Poster_Nordstat.pdf)** | Poster presentation from Nordstat 2021 conference, "The 28th Nordic Conference in Mathematical Statistics"
+**[A JOINT BAYESIAN FRAMEWORK FOR MEASUREMENT ERROR AND MISSING DATA](https://emmaskarstein.github.io/images/Poster_Nordstat.pdf)** | Poster presentation from Nordstat 2021 conference, "The 28th Nordic Conference in Mathematical Statistics", presenting my work on jointly modelling measurement error and missing data using INLA. 
 
+.
 
+.
+
+.
+
+#### TidyTuesday contributions
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
+knitr::include_graphics("images/2021week35.png")
+```
+
+:::
+
+**[TidyTuesday data visualizations](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains my contributions!
