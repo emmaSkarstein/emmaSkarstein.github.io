@@ -6,7 +6,7 @@ links:
     url: "https://www.linkedin.com/in/emma-sofie-skarstein-476510158/"
   - label: Github
     url: "https://github.com/emmaSkarstein"
-  - label: Email
+  - label: E-mail
     url: "mailto:emma@skarstein.no"
 site: distill::distill_website
 output:
@@ -79,9 +79,9 @@ knitr::include_graphics("images/small_poster_nordstat.png")
 ::: {.floatting}
 
 ```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
-knitr::include_graphics("images/2021week35.png")
+knitr::include_graphics("images/2021week43_pumpkins.png")
 ```
 
 :::
 
-**[TidyTuesday data visualizations](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains my contributions!
+**[TidyTuesday data visualizations](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains all my contributions!
