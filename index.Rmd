@@ -84,4 +84,4 @@ knitr::include_graphics("images/2021week43_pumpkins.png")
 
 :::
 
-**[TidyTuesday data visualizations](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains all my contributions!
+**[TIDY TUESDAY DATA VISUALIZATIONS](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains all my contributions!
