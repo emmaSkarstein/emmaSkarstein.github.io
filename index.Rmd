@@ -4,7 +4,7 @@ image: "images/emma_mattiniemi.jpg"
 links:
   - label: LinkedIn
     url: "https://www.linkedin.com/in/emma-sofie-skarstein-476510158/"
-  - label: Github
+  - label: GitHub
     url: "https://github.com/emmaSkarstein"
   - label: E-mail
     url: "mailto:emma@skarstein.no"
@@ -24,7 +24,23 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
 
 *A wide selection of personal and professional work, including data visualizations, conference posters, presentation slides, and educational resources.*
 
-#### My ggplot2 resources
+#### Data graphics and visualization resources
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
+knitr::include_graphics("images/2021week43_pumpkins.png")
+```
+
+:::
+
+**[TIDY TUESDAY DATA VISUALIZATIONS](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains all my contributions!
+
+.
+
+.
+
+.
 
 ::: {.floatting}
 
@@ -51,9 +67,11 @@ knitr::include_graphics("images/small_anatomy.png")
 
 **[THE ANATOMY OF A GGPLOT2-PLOT](https://emmaskarstein.github.io/images/anatomy_of_ggplot.pdf)** | My reference for remembering all the different theme-variables in ggplot2.
 
+
 .  
 
 .  
+
 
 #### Posters
 
@@ -74,14 +92,5 @@ knitr::include_graphics("images/small_poster_nordstat.png")
 
 .
 
-#### TidyTuesday contributions
 
-::: {.floatting}
 
-```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
-knitr::include_graphics("images/2021week43_pumpkins.png")
-```
-
-:::
-
-**[TIDY TUESDAY DATA VISUALIZATIONS](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains all my contributions!
