@@ -2,10 +2,12 @@ name: "distill_website"
 title: "Emma Skarstein"
 description: |
   Emma Skarstein
-output_dir: "docs"
+output_dir: "_site"
 navbar:
   right:
     - icon: fab fa-github
       href: "https://github.com/emmaSkarstein"
+    - text: "blog"
+      href: blog.html
 output: distill::distill_article
 

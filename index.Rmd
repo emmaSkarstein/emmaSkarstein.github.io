@@ -24,6 +24,28 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
 
 *A wide selection of personal and professional work, including data visualizations, conference posters, presentation slides, and educational resources.*
 
+
+#### Research
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
+knitr::include_graphics("images/small_poster_nordstat.png")
+```
+
+:::
+
+
+**[A JOINT BAYESIAN FRAMEWORK FOR MEASUREMENT ERROR AND MISSING DATA](https://emmaskarstein.github.io/images/Poster_Nordstat.pdf)** | Poster presentation from Nordstat 2021 conference, "The 28th Nordic Conference in Mathematical Statistics", presenting my work on jointly modelling measurement error and missing data using INLA. 
+
+.
+
+.
+
+.
+
+
+
 #### Data graphics and visualization resources
 
 ::: {.floatting}
@@ -71,26 +93,4 @@ knitr::include_graphics("images/small_anatomy.png")
 .  
 
 .  
-
-
-#### Posters
-
-::: {.floatting}
-
-```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
-knitr::include_graphics("images/small_poster_nordstat.png")
-```
-
-:::
-
-
-**[A JOINT BAYESIAN FRAMEWORK FOR MEASUREMENT ERROR AND MISSING DATA](https://emmaskarstein.github.io/images/Poster_Nordstat.pdf)** | Poster presentation from Nordstat 2021 conference, "The 28th Nordic Conference in Mathematical Statistics", presenting my work on jointly modelling measurement error and missing data using INLA. 
-
-.
-
-.
-
-.
-
-
 

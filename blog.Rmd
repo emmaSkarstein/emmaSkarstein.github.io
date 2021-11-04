@@ -1,0 +1,7 @@
+---
+title: "Blog"
+listing:
+  posts:
+    - 2021-10-28-ways-of-visualizing-missing-data
+---
+
