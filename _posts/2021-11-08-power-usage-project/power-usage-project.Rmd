@@ -1,7 +1,7 @@
 ---
 title: "Power usage project"
 description: |
-  A short description of the post.
+  Through elhub.no I have access to all the power usage data from my apartment. I have made the data available in an R package, and this is a brief look at it!
 author:
   - name: Emma Skarstein
     url: https://emmaskarstein.github.io
@@ -16,7 +16,9 @@ output:
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, cache=TRUE)
 ```
 
-Welcome to my power usage project! Through [elhub](https://www.elhub.no/) I have downloaded (and will continue to download) monthly data sets containing the hourly power usage in my appartment. I made an [R-package](https://github.com/emmaSkarstein/power.usage.analysis) that contains all the data plus some useful functions. Here I will explore some visualisations of the data.
+(This post was first made in January 2021, I'm just reposting now that I have this blog thing going)
+
+Welcome to my power usage project! Through [elhub](https://www.elhub.no/) I have downloaded (and will continue to download) monthly data sets containing the hourly power usage in my apartment. I made an [R-package](https://github.com/emmaSkarstein/power.usage.analysis) that contains all the data plus some useful functions. Here I will explore some visualisations of the data.
 
 My goal is to produce visualizations of these data that are easy to interpret for people without any particular statistical background. I this document I will be trying out different things and showing a bit of the process, so this is not meant to be a perfect finished product, rather a kind of documentation of the process. 
 
@@ -192,7 +194,7 @@ ggplot(data, aes(x = hour, y = forbruk)) +
 
 I also want to try a fancier, less detailed version that represents time periods with higher usage as larger areas. I have split the day into 3-hour intervals (should I use a finer resolution?), and the below plot shows the total power consumption in each time period. (Would it be better with a donut to represent the day as a cycle?) (would be nice to show the times on the plot somehow)
 
-```{r, fig.height=2, fig.width = 8}
+```{r, fig.height=2, fig.width = 8, preview=TRUE}
 # Adding grouped time column
 data <- data %>% mutate(grouped_time = 
                           factor(floor(as.numeric(substr(hour, start = 1, stop = 2))/3)))

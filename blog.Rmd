@@ -2,6 +2,7 @@
 title: "Blog"
 listing:
   posts:
+    - 2021-11-08-power-usage-project
     - 2021-10-28-ways-of-visualizing-missing-data
 ---
 
