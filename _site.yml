@@ -7,7 +7,10 @@ navbar:
   right:
     - icon: fab fa-github
       href: "https://github.com/emmaSkarstein"
-    - text: "blog"
+    - text: "BLOG"
       href: blog.html
-output: distill::distill_article
+output: 
+  distill::distill_article
+  
+  
 
