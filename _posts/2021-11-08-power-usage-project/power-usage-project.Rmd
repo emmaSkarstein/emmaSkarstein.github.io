@@ -1,7 +1,7 @@
 ---
-title: "Power usage project"
+title: "Power consumption project"
 description: |
-  Through elhub.no I have access to all the power usage data from my apartment. I have made the data available in an R package, and this is a brief look at it!
+  Through elhub.no I have access to all the power consumption data from my apartment. I have made the data available in an R package, and this is a brief look at it!
 author:
   - name: Emma Skarstein
     url: https://emmaskarstein.github.io
