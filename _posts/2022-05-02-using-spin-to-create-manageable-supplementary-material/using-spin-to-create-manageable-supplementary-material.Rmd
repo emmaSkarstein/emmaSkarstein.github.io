@@ -1,0 +1,33 @@
+---
+title: "Using spin to create manageable supplementary material"
+description: |
+  Good supplementary material means a lot more than just uploading your R scripts. Rmarkdown allows us to easily provide comments and explanations of our code, but it means more files to manage -- perhaps you already have the code in an R script and are manually copying it into the .Rmd-file. With knitr's spin function, you can automatically convert your R script to an Rmarkdown file, leading to easier code-sharing and ultimately making your research easier to re-do. Here, I share some of the tricks I have learned about how to make clean, user-friendly supplementary material using spin.
+author:
+  - name: Emma Skarstein
+    url: https://emmaskarstein.github.io
+date: 05-02-2022
+draft: true
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+The `knitr::spin()`` function takes any r script and turns it into a html or pdf document without any further modifications. You do this either by clicking the little notebook symbol in the toolbar above your script, or by pressing *shift + command + K* (the same shortcut as you use to knit). However, if you want to, you may use the syntax for Roxygen comments to add normal text to the compiled document, as well as a YAML frontmatter and anything else you would to in a regular Rmarkdown document. You can read more about the details of basic spinning here: https://bookdown.org/yihui/rmarkdown-cookbook/spin.html
+
+In this post I want to share some things I've learned from using spin to create the supplementary material for my paper.
+
+# File paths
+#+ setup, include=FALSE
+knitr::opts_knit$set(root.dir = '../..')
+
+# Child files
+https://yihui.org/en/2021/06/spin-child/ 
+
+# Workflow
+
+
