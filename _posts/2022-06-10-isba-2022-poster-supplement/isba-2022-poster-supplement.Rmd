@@ -16,8 +16,30 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
+![ISBAposter](https://emmaskarstein.github.io/images/Poster_ISBA.png)
+![ISBAposter](https://github.com/emmaSkarstein/emmaSkarstein.github.io/blob/master/images/Poster_ISBA.png)
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
+
+# ABSTRACT
+Measurement error and missing values in covariates are inescapable in any discipline that deals with data, and both problems have received considerable attention. Despite this, many applied scientists are still not routinely accounting for varying types of measurement error in their covariates.
+
+Here we describe a joint Bayesian framework that simultaneously accounts for measurement error and missing data, by using the fact that missing data can be interpreted as an extreme case of missing data. 
+In addition, we show how to account for Berkson measurement error in the same framework, which provides a convenient setup for modelling Berkson measurement error, classical measurement error, missing data, or any combination of these in the same or different covariates. 
+
+By using integrated nested Laplace approximations (INLA) we show how potentially complex Bayesian hierarchical models can be implemented efficiently. The approach is applicable to a wide variety of regression models, some of which will be exemplified in this paper using both simulated and real data. 
+
+TODO: Adjust this to the poster presentation
+
+# THE MOST GENERAL MODEL: Missing data, classical measurement error and Berkson measurement error
+TODO: Equations and text from the paper
+
+# EXAMPLES
+
+
+# Poster design
+My poster design is completely copied from this Psycho poster (link). I have also been very inspired by Mike Morrison's \#betterposter campaign, and would definitely recommend checking out his videos on how to make better academic posters in less time, here is one of them: https://www.youtube.com/watch?v=WBjhxjWDiHw. 
+Of course, Mike Morrison's point is to help researchers spend less time on their posters. But I really like fiddling with the design of my poster, and so I tried to adapt his principles while simultaneously trying to copy the design of the movie poster. I think vintage movie posters or advertisements are actually great models for how we could design academic posters, as they grab your attention with impactful and attractive colors and fonts, while at the same time not being too over-crowded and often very minimalistic. I think this use of fonts, colors and simplistic figures or icons can be a great guide, and copying a movie poster makes it more of an interesting challenge rather than a frustration. 
+
+I made the poster in Power Point, using google fonts when I couldn't find a good font match in the default fonts. The equations are made using eulerfont in Latex and appropriate font and background color, and then screen-shotted into the poster. 
 
 
