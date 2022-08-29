@@ -2,8 +2,6 @@
 title: "Emma Skarstein"
 image: "images/emma_mattiniemi.jpg"
 links:
-  - label: LinkedIn
-    url: "https://www.linkedin.com/in/emma-sofie-skarstein-476510158/"
   - label: GitHub
     url: "https://github.com/emmaSkarstein"
   - label: E-mail
@@ -15,14 +13,14 @@ output:
 
 ## BIO
 
-I'm a PhD student of statistics at the Norwegian University of Science and Technology (NTNU). I'm currently working with Bayesian methods for measurement error correction, using integrated nested Laplace approximation (INLA). Apart from that, I also really enjoy data visualization, specifically I use R programming language and the ggplot2 package for this. In my free time, I garden and play with my incredible cat Hermione ([who is an aspiring celebrity on Instagram](https://www.instagram.com/tiny.hermione.the.cat/)).
+I'm a PhD student of statistics at the Norwegian University of Science and Technology (NTNU). I'm currently working with Bayesian methods for measurement error correction, using integrated nested Laplace approximation (INLA). Apart from that, I also really enjoy data visualization, specifically I use R programming language and the ggplot2 package for this.
  
  
 ---
 
 ## PORTFOLIO
 
-*A wide selection of personal and professional work, including data visualizations, conference posters, presentation slides, and educational resources.*
+*A selection of personal and professional work, including data visualizations, conference posters, presentation slides, and educational resources.*
 
 
 #### Research
@@ -36,7 +34,7 @@ knitr::include_graphics("images/Poster_ISBA.png")
 :::
 
 
-**[We show how to handle missing data in INLA by generalizing existing measurement error models](https://emmaskarstein.github.io/images/Poster_ISBA.png)** | Poster presentation from ISBA 2022 World meeting.
+**[We show how to handle missing data in INLA by generalizing existing measurement error models](https://emmaskarstein.github.io/images/Poster_ISBA.png)** | Poster presentation from ISBA 2022 World meeting, presenting a method for covariate imputation in INLA using measurement error models. The poster received a prize.
 
 .
 

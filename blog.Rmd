@@ -2,7 +2,6 @@
 title: "Blog"
 listing:
   posts:
-    - 2022-05-02-using-spin-to-create-manageable-supplementary-material
     - 2021-11-08-power-usage-project
     - 2021-10-28-ways-of-visualizing-missing-data
 output: 
