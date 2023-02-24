@@ -1,0 +1,204 @@
+---
+title: "What did women work with in 1920?"
+description: |
+  I became aware of the city of Boston's Mary Eliza project through the [Data is Plural](https://www.data-is-plural.com/) newsletter. The Mary Eliza project is transcribing 160 handwritten volumes of the General Registers of Women Voters from the City of Boston in 1920, and making all this data available to the public. This is such a rich and fascinating data set to look into! Here, I examine the reported jobs of these women, and through that I attempt to give some insight into what life was like for these women, more than 100 years ago. 
+author:
+  - name: Emma Skarstein
+    url: https://emmaskarstein.github.io
+date: 02-21-2023
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    theme: postcards.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, cache=TRUE)
+```
+
+# Get the data and setting up
+
+I'll be using the `tidyverse` package:
+
+```{r}
+library(tidyverse)
+```
+
+Would you like to follow along? You can download the data yourself [from the project website](https://data.boston.gov/dataset/1920-women-s-voter-register). Note that this dataset is updated continuously, so the dataset may have expanded since I downloaded it (January 18th 2023). I have the exact data I used [on my GitHub repo](https://raw.githubusercontent.com/emmaSkarstein/visualization_projects/master/Women_voters/womens-voter-registers.csv), in case you want to make sure you have the same data. All the code for this project is also [on GitHub](https://github.com/emmaSkarstein/visualization_projects/tree/master/Women_voters).
+
+I'll load the data and clean the column names, to begin with.
+
+```{r}
+voters_raw <- read.csv("https://raw.githubusercontent.com/emmaSkarstein/visualization_projects/master/Women_voters/womens-voter-registers.csv")
+voters <- voters_raw %>% 
+  janitor::clean_names()
+```
+
+# Birth countries
+
+First of all, I would definitely recommend just scrolling through this dataset, I could spend hours just looking at all the individual entries! 
+
+We can also do some simple summaries, for example, what are the birth countries of these women?
+
+```{r}
+countries <- voters %>% count(country_of_birth, sort = TRUE)
+countries %>% head(15)
+```
+
+Unsurprisingly a majority is born in the US, but there are quite a few immigrants as well. We can print all of them without the counts to save space: 
+
+```{r}
+countries[,1]
+```
+Interesting! If we were to do some analysis based on this I think we could do some further cleaning here, though we need to be careful about making assumptions when working with historical data. For instance, I was thinking that I would change Newfoundland to Canada, but turns out Newfoundland wasn't a part of Canada until 1949! Also, Norway separated from Sweden in 1905, but the one person who wrote Norway Sweden as their country of birth was probably born before then, when they were still a union. Also, apparently Vermont was it's own republic from 1777 to 1791, but I'm guessing this person wasn't born in that time period. Maybe it was a political statement? But I suppose we could assume that "Russian Poland", "Russia Poland" and "Poland-Russia" are referring to the same place?
+
+
+# Popular and rare names
+
+I also think name trends are really interesting, so I am curious about the most popular names:
+
+```{r}
+names <- voters %>% 
+  separate(name, into = c("first", "rest"), sep = "\\s", extra = "merge") %>% 
+  count(first, sort = TRUE)
+
+head(names, n = 10)
+```
+These are maybe not so surprising. We can look at a sample of the least common names:
+
+```{r, max.height = '100px'}
+set.seed(1920)
+special_names <- names %>% filter(n == 1)
+random_rows <- sample(1:nrow(special_names), size = 100)
+special_names[random_rows, 1]
+```
+
+I love this! I suspect some of these may be misspelled, but that is just the joy of historical data.
+
+# Occupations (what I actually wanted to look at!)
+So what I really want to look closer at for this project are the recorded occupations. We can do a quick count of the top ones:
+
+```{r}
+occupations <- voters %>% count(occupation, sort = TRUE) 
+head(occupations, 15)
+```
+
+Just like with the countries, I already see some things I would like to clean up here, but we need to be careful to not make incorrect assumptions when working on this historical data. However, there are some things I think we can safely assume. Let's print out a longer list of just the occupations without the counts to get a better idea of what we will need to do:
+
+```{r}
+occupations[1:100, 1]
+```
+There are some things to note here:
+
+- Compound words: "bookkeeper" vs "book keeper" vs "book-keeper", the same goes for a few other words, "house keeper", "book binder", "house wife", etc.
+- Capitalization: "At home" vs "at home"
+- Abbreviations: "tel. operator", "h.w."
+- "woman" versus "lady": "saleslady" vs "saleswoman", and some other titles as well
+- "maker" versus "making": any occupation ending with "-making" typically also had some cases of being specified with "-making" instead, e.g "dressmaker" vs "dressmaking"
+
+The above list is pretty much just a question of spelling, and I don't think I'm making any bold assumptions when I change these to be consistent. However, there are some other changes I am a bit less certain about that I will nonetheless to for the sake of my visualization:
+
+- Married or not? In many cases, they have "married" as a part of their occupational status, which isn't relevant for my purpose. However, what does it mean if they only have "married" listed as their occupation? I have grouped this together with "housewife", which I think is ok, but I might be wrong.
+- A housewife in other words: In addition to grouping "married" and all the various spellings of "housewife" as "housewife", I'm also assuming that "at home" and "house work" means the same thing. However, the way I understand it "housekeeper" is not the same, as they are someone doing house work in someone else's home.
+- A housekeeper in other words: I ended up not grouping "domestic" together with housekeeper because I was too uncertain of the meaning of this at the time.
+- Nurses: There are a few different titles related to nurses. I made a decision to group together everything with the word "nurse", though this is likely removing some nuances. Since the numbers are fairly small I feel it was ok.
+- Clerks: The same goes for anything clerk-related.
+
+In order to make all these groupings and adjustments, I used the `case_when()` function from `dplyr`:
+
+```{r}
+occupations_clean <- voters %>% 
+  mutate(occupation = tolower(occupation), # everything lowercase
+         occupation = gsub("-", "", occupation), # remove all hyphens
+         occupation = gsub("\\[|\\]", "", occupation), # remove all brackets
+         occupation = case_when(
+           is.na(occupation) ~ "Not given", 
+           grepl("(hous.*wife)|(h. ?w)|(at home)|(^married$)|(house.*work)|(^home$)", 
+                 occupation) ~ "housewife",
+           grepl("(telephone)|(tel. operator)|(^.?phone)", occupation) ~ "telephone operator",
+           grepl("(^m.*ch.*operat)|(operator machine)", occupation) ~ "machine operator",
+           grepl("switch.*board", occupation) ~ "switchboard operator",
+           grepl("(dress).*(mak)", occupation) ~ "dressmaker",
+           grepl("sten", occupation) ~ "stenographer",
+           grepl("boo.*keep", occupation) ~ "bookkeeper",
+           grepl("house.*keep", occupation) ~ "housekeeper",
+           grepl("book.*binder", occupation) ~ "bookbinder",
+           grepl("box.*maker", occupation) ~ "box maker",
+           grepl("brush.*maker", occupation) ~ "brush maker",
+           grepl("nurse", occupation) ~ "nurse",
+           grepl("store.*keeper", occupation) ~ "storekeeper",
+           grepl("(( )|^)(hair)", occupation) ~ "hairdresser",
+           grepl("telegraph", occupation) ~ "telegrapher",
+           grepl("candy", occupation) ~ "candy worker",
+           grepl("sales", occupation) ~ "saleslady",
+           grepl("laund", occupation) ~ "laundress",
+           grepl("fore", occupation) ~ "forelady",
+           grepl("(office work)|(office assistant)", occupation) ~ "office work",
+           grepl("piano", occupation) ~ "piano teacher",
+           grepl("school.*teacher", occupation) ~ "teacher",
+           grepl("buyer", occupation) ~ "buyer",
+           grepl("compt", occupation) ~ "comptometer operator",
+           grepl("secretary", occupation) ~ "secretary",
+           grepl("(^sew)|(seamstress)", occupation) ~ "seamstress",
+           grepl("(milliner)|(hat)", occupation) ~ "hatmaker",
+           grepl("elevator", occupation) ~ "elevator operator",
+           grepl("physician", occupation) ~ "physician",
+           grepl("clerk", occupation) ~ "clerk",
+           TRUE ~ occupation),
+         occupation = fct_lump_min(occupation, min = 7)
+         ) %>% 
+  count(occupation, sort = TRUE) %>% 
+  mutate(order = 1:nrow(.))
+```
+
+This was very good practice in regular expressions! My workflow for discovering all the necessary changes and how to capture them as concisely as possible in a regular expression consisted of both manual searches in `View()` in RStudio, as well as lots of testing in regex101.com (what an amazig resource <3 ). I would write a list of all the various spellings of an occupation in regex101.com, and then try to come up with an appropriate regular expression to capture all of them. I haven't worked a ton with regular expressions before, so I suspect that some of these could have been done better, but I definitely learned quite a bit from this! It was always a challenge to make sure not to include something by mistake, for instance I thought I would just search for anything containing "hair" and recode that as hairdresser, but just searching for "hair" would also select "chairwoman", which was not what I wanted!
+
+I also made the decision to group together all the occupations that came up six times or less into "other". Though they were definitely interesting to look at! I for sure think it is possible to group the occupations a bit more, I put more than 500 unique entries into my "other" category, but after scrolling through them I think I at least managed to pick out the ones that would make a significant impact in my visualization.
+
+I decided early on that I wanted to make this into a bar-chart to make the sizes of the different occupations clear. But a simple bar-chart of this would look something like this:
+
+```{r, fig.height = 8, fig.width = 8}
+ggplot(occupations_clean, aes(x = n, y = reorder(occupation, n))) +
+  geom_col() +
+  theme_minimal()
+```
+
+This is fine, but the size of the "housewife" category kind of masks the other categories. Is there some way of shifting the focus to the other categories while still displaying the size of the housewife-category? This made me think of some of the visualizations by W.E.B Du Bois, where I remembered seeing a "bent" bar chart, similar to a normal bar chart but with one of the bars being folded. When I looked it up I found that he has a few different data portraits of this type, for instance Plate 17 and Plate 26, shown below. Note that Plate 26 also displays occupations! 
+
+![Plate 17](https://emmaskarstein.github.io/images/plate17.jpg)
+![Plate 26](https://emmaskarstein.github.io/images/plate26.jpg)
+
+
+
+
+```{r}
+n_housewives <- occupations_clean[1, 2] %>% as.numeric()
+n_housewives_div3 <- round(n_housewives/3)
+occupations_clean[1, 2] <- n_housewives_div3
+
+# Is domestic the same as housewife? Assuming housekeeper is not the same, as you might be keeping someone else's house?
+
+n_occs <- nrow(occupations_clean)
+bar_width <- 2.2
+
+ggplot(occupations_clean) +
+  geom_segment(aes(x = 0, xend = n, 
+                   y = reorder(occupation, n), yend = reorder(occupation, n)),
+               size = bar_width) +
+  # Bottom curve, right side
+  geom_curve(aes(x = n_housewives_div3, y = n_occs, xend = n_housewives_div3, yend = n_occs+1), 
+                 colour = "black", curvature = 1.4, size = bar_width) +
+  # Middle segment
+  geom_segment(aes(x = n_housewives_div3, xend = 0, y = n_occs+1, yend = n_occs+1), 
+               size = bar_width) +
+  # Top curve, left side
+  geom_curve(aes(x = 0, y = n_occs+1, xend = 0, yend = n_occs+2), 
+             colour = "black", curvature = -1.4, size = bar_width) +
+  geom_segment(aes(x = n_housewives_div3, xend = 0, y = n_occs+2, yend = n_occs+2), 
+               size = bar_width) +
+  # Number labels
+  geom_text(aes(x = n+50, y = reorder(occupation, n), label = n), hjust = 0, size = 2) +
+  scale_y_discrete(expand = expansion(mult = c(0.01, .05)))
+```
+
