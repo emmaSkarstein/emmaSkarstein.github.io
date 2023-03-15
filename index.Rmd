@@ -25,6 +25,7 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
 
 #### Research
 
+
 ::: {.floatting}
 
 ```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
@@ -34,7 +35,7 @@ knitr::include_graphics("images/Poster_ISBA.png")
 :::
 
 
-**[We show how to handle missing data in INLA by generalizing existing measurement error models](https://emmaskarstein.github.io/images/Poster_ISBA.png)** | Poster presentation from ISBA 2022 World meeting, presenting a method for covariate imputation in INLA using measurement error models. The poster received a prize.
+**[WE SHOW HOW TO HANDLE MISSING DATA IN INLA BY GENERALIZING EXISTING MEASUREMENT ERROR MODELS](https://emmaskarstein.github.io/images/Poster_ISBA.png)** | Poster presentation from ISBA 2022 World meeting, presenting a method for covariate imputation in INLA using measurement error models. The poster received a prize.
 
 .
 
