@@ -200,7 +200,7 @@ Nice! That wasn't too tricky! Now for adding annotations, and beautifying everyt
 I want to highlight some of the bars for emphasis, in this case I prefer doing that by defining a separate color column in the dataset.
 
 ```{r}
-col_housewife <- "#191919"
+col_housewife <- "#D2042D"
 occupations_clean <- occupations_clean %>% 
   mutate(bar_color = case_when(occupation == "HOUSEWIFE" ~ col_housewife,
                                occupation %in% 

@@ -1782,7 +1782,7 @@ Figure 1: caption
 <p>I want to highlight some of the bars for emphasis, in this case I prefer doing that by defining a separate color column in the dataset.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>col_housewife</span> <span class='op'>&lt;-</span> <span class='st'>"#191919"</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>col_housewife</span> <span class='op'>&lt;-</span> <span class='st'>"#D2042D"</span></span>
 <span><span class='va'>occupations_clean</span> <span class='op'>&lt;-</span> <span class='va'>occupations_clean</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>bar_color <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>occupation</span> <span class='op'>==</span> <span class='st'>"HOUSEWIFE"</span> <span class='op'>~</span> <span class='va'>col_housewife</span>,</span>
 <span>                               <span class='va'>occupation</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> </span>
