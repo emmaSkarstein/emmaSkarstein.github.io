@@ -4,6 +4,8 @@ image: "images/emma_mattiniemi.jpg"
 links:
   - label: GitHub
     url: "https://github.com/emmaSkarstein"
+  - label: Blog
+    url: "https://emmaskarstein.github.io/blog.html"
   - label: E-mail
     url: "mailto:emma@skarstein.no"
 site: distill::distill_website
@@ -24,6 +26,23 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
 
 
 #### Research
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
+knitr::include_graphics("images/simmonds_etal.jpg")
+```
+
+:::
+
+
+**[INSIGHTS INTO THE QUANTIFICATION AND REPORTING OF MODEL-RELATED UNCERTAINTY ACROSS DIFFERENT DISCIPLINES](https://pubmed.ncbi.nlm.nih.gov/36465136/)** | A cross-disciplinary review project, examining how different fields report uncertainty. 
+
+.
+
+.
+
+.
 
 
 ::: {.floatting}
@@ -75,6 +94,26 @@ knitr::include_graphics("images/2021week43_pumpkins.png")
 :::
 
 **[TIDY TUESDAY DATA VISUALIZATIONS](https://github.com/emmaSkarstein/tidytuesday)** | Every Tuesday, the Tidy Tuesday project publishes a dataset for people to practice their data cleaning and data visualization. This GitHub repository contains all my contributions!
+
+.
+
+.
+
+.
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
+knitr::include_graphics("images/british_monarchs.png")
+```
+
+:::
+
+**[VISUALIZATION PROJECTS](https://github.com/emmaSkarstein/visualization_projects)** | Slightly bigger visualization projects centered around data I am interested in.
+
+.
+
+.
 
 .
 
