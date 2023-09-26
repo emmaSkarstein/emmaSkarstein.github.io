@@ -30,6 +30,23 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
 ::: {.floatting}
 
 ```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
+knitr::include_graphics("images/simulation_boxplot.png")
+```
+
+:::
+
+
+**[A joint Bayesian framework for missing data and measurement error using integrated nested Laplace approximations](https://onlinelibrary.wiley.com/doi/full/10.1002/bimj.202300078)** | How a measurement error model can be used to do missing data imputation in INLA. The first paper of my PhD.
+
+.
+
+.
+
+.
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
 knitr::include_graphics("images/simmonds_etal.jpg")
 ```
 
