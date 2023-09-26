@@ -30,6 +30,25 @@ I'm a PhD student of statistics at the Norwegian University of Science and Techn
 ::: {.floatting}
 
 ```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
+knitr::include_graphics("images/inlami_transparent.png")
+```
+
+:::
+
+
+**[inlami](https://emmaskarstein.github.io/inlami/)** | An R-package for fitting measurement error and missing data imputation models using INLA. 
+
+.
+
+.
+
+.
+
+.
+
+::: {.floatting}
+
+```{r echo = FALSE, out.width='25%', out.extra='style="float:right; padding:10px; border-radius:8%"'}
 knitr::include_graphics("images/simulation_boxplot.png")
 ```
 
@@ -42,7 +61,6 @@ knitr::include_graphics("images/simulation_boxplot.png")
 
 .
 
-.
 
 ::: {.floatting}
 
