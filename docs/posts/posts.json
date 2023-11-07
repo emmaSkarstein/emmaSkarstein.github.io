@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2023-11-07-a-markov-christmas-chain/",
+    "title": "A Markov Christmas chain",
+    "description": "Let's generate colorful Christmas chains that fulfill the Markov property!",
+    "author": [
+      {
+        "name": "Emma Skarstein",
+        "url": "https://emmaskarstein.github.io"
+      }
+    ],
+    "date": "2023-11-07",
+    "categories": [],
+    "contents": "\nI was discussing potential math-related Christmas decorations with Christoffer Andersen, when he suggested a Markov Christmas chain. I thought that could be a fun little visualization project, so here it is!\nFor this project, I will use R, and the packages ggplot2 for plotting and ggforce to get geom_ellipse for the chains themselves.\n\n\nlibrary(ggplot2)\nlibrary(ggforce)\n\n\nFirst we need to generate the actual Markov chain. We decide on some colors for our chain:\n\n\ncolors <- c(\"darkred\", \"#1A3E10\", \"olivedrab\", \"#5F3B71\")\n\n\nand then we also need to specify the length of the chain, let’s do 20 chains for now.\n\n\nchain_length <- 20\n\n\nThen we set up the transition matrix for the Markov chain. In this case, I don’t want any colors repeating directly after each other, so I set all the diagonal entries to zero.\n\n\nn_colors <- length(colors)\n\ntransition_probs <- matrix(c(0.0, 1/3, 1/3, 1/3,\n                             1/3, 0.0, 1/3, 1/3,\n                             1/3, 1/3, 0.0, 1/3, \n                             1/3, 1/3, 1/3, 0.0), \n                           nrow = n_colors, byrow = TRUE, \n                           dimnames = list(colors, colors))\n\n\nTo visualize the transition probabilities, we can use the package markovchain:\n\n\nlibrary(markovchain)\nplot_transitions <- new(\"markovchain\", transitionMatrix = transition_probs)\nplot(plot_transitions)\n\n\n\nFor the starting color, I just choose a random color with equal probability.\n\n\nstarting_index <- sample(size = 1, 1:n_colors, prob = rep(1/n_colors, n_colors))\n\n\nNow we set up a loop to generate a realization from this Markov chain. For each iterations, the color from the previous iteration decides the probabilities for the next color, according to the transition matrix above.\n\n\nindex_list <- rep(NA, chain_length)\nindex_list[1] <- starting_index\n\nfor(chain in 2:chain_length){\n  current_chain <- sample(size = 1, 1:n_colors, \n                          prob = transition_probs[index_list[chain-1], ])\n  index_list[chain] <- current_chain\n}\n\nchain_data <- data.frame(chain = 1:chain_length, \n                         color_id = as.factor(index_list))\n\n\nOnce we have our chain realization, we can plot it!\n\n\nggplot(chain_data) +\n  geom_ellipse(aes(x0 = chain, y0 = 0, a = 0.7, b = 0.5, angle = 0, \n                   color = color_id), \n               linewidth = 1.5, fill = NA) +\n  scale_color_manual(values = colors) +\n  coord_fixed(ylim = c(1, -1)) +\n  theme_void() +\n  theme(legend.position = \"none\") \n\n\n\nAnd there you have it!\n\n\n\n",
+    "preview": "posts/2023-11-07-a-markov-christmas-chain/a-markov-christmas-chain_files/figure-html5/unnamed-chunk-8-1.png",
+    "last_modified": "2023-11-07T11:54:07+01:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2023-02-23-what-did-women-work-with-in-1920-a-data-visualization-case-study/",
     "title": "What did women work with in 1920?",
     "description": "In this post I'll be looking at the occupations of the 11992 women who registered to vote in Boston in 1920. Using `ggplot2` I'll be making a bar chart with a curved bar to display the different occupations.",

@@ -1,0 +1,98 @@
+---
+title: "A Markov Christmas chain"
+description: |
+  Let's generate colorful Christmas chains that fulfill the Markov property!
+author:
+  - name: Emma Skarstein
+    url: https://emmaskarstein.github.io
+date: 2023-11-07
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I was discussing potential math-related Christmas decorations with [Christoffer Andersen](https://www.ntnu.no/ansatte/christoffer.andersen), when he suggested a Markov Christmas chain. I thought that could be a fun little visualization project, so here it is!
+
+For this project, I will use R, and the packages `ggplot2` for plotting and `ggforce` to get `geom_ellipse` for the chains themselves.
+
+```{r}
+library(ggplot2)
+library(ggforce)
+```
+
+
+First we need to generate the actual Markov chain. We decide on some colors for our chain: 
+
+```{r}
+colors <- c("darkred", "#1A3E10", "olivedrab", "#5F3B71")
+```
+
+and then we also need to specify the length of the chain, let's do 20 chains for now. 
+
+```{r}
+chain_length <- 20
+```
+
+Then we set up the transition matrix for the Markov chain. In this case, I don't want any colors repeating directly after each other, so I set all the diagonal entries to zero.
+
+```{r}
+n_colors <- length(colors)
+
+transition_probs <- matrix(c(0.0, 1/3, 1/3, 1/3,
+                             1/3, 0.0, 1/3, 1/3,
+                             1/3, 1/3, 0.0, 1/3, 
+                             1/3, 1/3, 1/3, 0.0), 
+                           nrow = n_colors, byrow = TRUE, 
+                           dimnames = list(colors, colors))
+```
+
+To visualize the transition probabilities, we can use the package `markovchain`:
+
+```{r}
+library(markovchain)
+plot_transitions <- new("markovchain", transitionMatrix = transition_probs)
+plot(plot_transitions)
+```
+
+For the starting color, I just choose a random color with equal probability.
+
+```{r}
+starting_index <- sample(size = 1, 1:n_colors, prob = rep(1/n_colors, n_colors))
+```
+
+Now we set up a loop to generate a realization from this Markov chain. For each iterations, the color from the previous iteration decides the probabilities for the next color, according to the transition matrix above.
+
+```{r}
+index_list <- rep(NA, chain_length)
+index_list[1] <- starting_index
+
+for(chain in 2:chain_length){
+  current_chain <- sample(size = 1, 1:n_colors, 
+                          prob = transition_probs[index_list[chain-1], ])
+  index_list[chain] <- current_chain
+}
+
+chain_data <- data.frame(chain = 1:chain_length, 
+                         color_id = as.factor(index_list))
+```
+
+Once we have our chain realization, we can plot it! 
+
+```{r, fig.height=1, preview=TRUE}
+ggplot(chain_data) +
+  geom_ellipse(aes(x0 = chain, y0 = 0, a = 0.7, b = 0.5, angle = 0, 
+                   color = color_id), 
+               linewidth = 1.5, fill = NA) +
+  scale_color_manual(values = colors) +
+  coord_fixed(ylim = c(1, -1)) +
+  theme_void() +
+  theme(legend.position = "none") 
+```
+
+And there you have it! 
+

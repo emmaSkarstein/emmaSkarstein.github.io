@@ -2,6 +2,7 @@
 title: "Blog"
 listing:
   posts:
+    - 2023-11-07-a-markov-christmas-chain
     - 2023-02-23-what-did-women-work-with-in-1920-a-data-visualization-case-study
     - 2021-11-08-power-usage-project
     - 2021-10-28-ways-of-visualizing-missing-data
