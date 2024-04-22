@@ -10,7 +10,7 @@ flower <- function(n_petals,
                    a = 0.5,
                    b = 0.5,
                    angle = 0, 
-                   linewidth = 1.5){
+                   linewidth = 1){
   # Make color and fill vectors if only one color is given:
   if(length(fill_values) == 1){
     fill_values <- rep(fill_values, n_petals)
