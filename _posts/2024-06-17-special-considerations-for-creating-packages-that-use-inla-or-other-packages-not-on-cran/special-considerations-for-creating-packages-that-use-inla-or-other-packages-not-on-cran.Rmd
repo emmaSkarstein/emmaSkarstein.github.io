@@ -1,0 +1,71 @@
+---
+title: "Special considerations for creating packages that use INLA (or other packages not on CRAN)"
+description: |
+  As a part of my PhD, I created a package `inlamemi`, which wraps around the `INLA::inla()` function. In creating the package, it took me a bit of trial and error to figure out what was necessary to be able to get the package on CRAN, since some special considerations must be taken since `INLA` is not on CRAN. Here, I have made an overview of these things, in part just as a checklist for myself, but maybe this is useful for someone else as well. Many of these considerations will apply for other packages than just `INLA`.
+author:
+  - name: Emma Skarstein
+    url: https://emmaskarstein.github.io
+date: 2024-06-17
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+General: CRAN will not have access to `INLA`, so anything in your package which uses INLA must be run conditionally on INLA being available. There are four main points that you need to be aware of: the description file, and any examples, tests and/or vignettes that require `INLA`.
+
+## Description file
+
+In the `Description file`, you will need to add `INLA` under `Suggests` thater than `Imports`, and you will need to add the line `Additional_repositories: https://inla.r-inla-download.org/R/stable/`. 
+
+## Examples
+For any examples that require `INLA`, rather than writing
+
+```
+#' @examples
+#' # Example code that depends on INLA
+```
+
+use `@examplesIf` instead, and for the condition use that the examples should only be run if `INLA` is available:
+```
+#' @examplesIf requireNamespace('INLA')
+#' # Example code that depends on INLA
+```
+Some examples I have seen use `\dontrun` or `\donttest` instead TODO: why is this better? is it?
+
+Here is more info on `@exampleIf` TODO: insert link.
+
+## Tests
+For any tests that require `INLA`, simply put `skip_on_cran()` at the top of the test:
+```
+test_that("inla-dependent function works", {
+  skip_on_cran()
+
+  # Tests that depend on INLA
+})
+
+```
+
+
+## Vignettes
+By default, the vignettes are all built when R CMD Check is run. If they contain `INLA`-dependent code, these will cause errors for the CRAN checks. Therefore, the vignettes that depend on `INLA` will need to be pre-compiled. Here is the article that helped me figure this out: TODO: link to ropensci article
+
+In addition to the stuff mentioned in that article, I set up my script to automatically run all the vignettes and move the "figure" folder, which is originally placed in the root directory for the package, into the vignette folder.
+
+## R CMD check for GitHub Actions
+If you want to set up R CMD Check through GitHub Actions, there are some additional steps that are needed TODO: put in the GA yaml stuff here. I figured out how to do this from this helpful thread: TODO: Link to Bob's question
+
+
+## Helpful links
+- my forum post
+- philips forum post
+- bobs forum post
+- ropensci on precompiling vignettes
+- All packages that use INLA on CRAN
+
+Special thanks to Gabor on the Posit forum for pointing me in the right direction when I was very lost, and to Bob and Philip for asking similar questions before me which also helped me figure things out. 
+
